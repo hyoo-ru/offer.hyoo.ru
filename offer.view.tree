@@ -38,8 +38,3 @@ $hyoo_offer $mol_book
 		title <= title
 		sub /
 			<= Image $mol_image uri \https://mol.js.org/app/demo/-/mol/app/demo/placeholder/technology.svg
-			- <= Text $mol_text
-				text <= text \
-					\Автоматизация бизнеса.
-					\Кроссплатформенные приложения.
-					\быстро и качественно.
