@@ -13,6 +13,7 @@ script:
   - npm start hyoo/offer
   - rm hyoo/offer/.gitignore
   - mv hyoo/offer/- offer.hyoo.ru
+  - mv hyoo/offer/CNAME offer.hyoo.ru/CNAME
 deploy:
   provider: pages
   skip_cleanup: true
