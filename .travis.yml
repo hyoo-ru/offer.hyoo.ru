@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6"
+  - "9"
 install:
   - cd ..
   - mkdir hyoo
@@ -10,9 +10,9 @@ install:
   - git pull origin master
   - npm install
 script:
-  - npm start hyoo/showcase
-  - rm hyoo/showcase/.gitignore
-  - mv hyoo/showcase/- showcase.hyoo.ru
+  - npm start hyoo/offer
+  - rm hyoo/offer/.gitignore
+  - mv hyoo/offer/- showcase.hyoo.ru
 deploy:
   provider: pages
   skip_cleanup: true
@@ -20,5 +20,3 @@ deploy:
   local_dir: .
   on:
     branch: master
-notifications:
-  slack: mam-mol:Z7vokFhXaSrMlPXzq6L93bUj
