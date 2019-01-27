@@ -12,7 +12,7 @@ install:
 script:
   - npm start hyoo/offer
   - rm hyoo/offer/.gitignore
-  - mv hyoo/offer/- showcase.hyoo.ru
+  - mv hyoo/offer/- offer.hyoo.ru
 deploy:
   provider: pages
   skip_cleanup: true
