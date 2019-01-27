@@ -37,7 +37,7 @@ $hyoo_offer $mol_book
 	Placeholder $mol_book_placeholder
 		title <= title
 		sub /
-			<= Image $mol_image uri \http://mol.js.org/app/demo/-/mol/app/demo/placeholder/technology.svg
+			<= Image $mol_image uri \https://mol.js.org/app/demo/-/mol/app/demo/placeholder/technology.svg
 			- <= Text $mol_text
 				text <= text \
 					\Автоматизация бизнеса.
