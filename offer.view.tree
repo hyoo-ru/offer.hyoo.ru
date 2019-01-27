@@ -1,0 +1,45 @@
+$hyoo_offer $mol_book
+	attr *
+		mol_theme \$mol_theme_dark
+	pages /
+		<= Main_page $mol_page
+			title \HyOO - приложения для бизнеса
+			minimal_width 400
+			body /
+				<= Menu $mol_list rows /
+					<= Corporate_link $mol_link
+						arg * business \corporate
+						title <= corporate_title \Корпоративным клиентам
+					<= Private_link $mol_link
+						arg * business \private
+						title <= private_title \Частному бизнесу
+					<= Dev_link $mol_link
+						arg * business \dev
+						title <= dev_title \Разработчикам
+		<= Corporate_page $hyoo_offer_corporate
+			title <= corporate_title
+			minimal_width 600
+			event_top?val <=> event_front_up?val
+			tools / <= Details_close
+		<= Private_page $hyoo_offer_private
+			title <= private_title
+			minimal_width 600
+			event_top?val <=> event_front_up?val
+			tools / <= Details_close
+		<= Dev_page $hyoo_offer_dev
+			title <= dev_title
+			minimal_width 600
+			event_top?val <=> event_front_up?val
+			tools / <= Details_close
+	Details_close $mol_link
+		arg * business null
+		sub / <= Details_close_icon $mol_icon_cross
+	Placeholder $mol_book_placeholder
+		title <= title
+		sub /
+			<= Image $mol_image uri \http://mol.js.org/app/demo/-/mol/app/demo/placeholder/technology.svg
+			- <= Text $mol_text
+				text <= text \
+					\Автоматизация бизнеса.
+					\Кроссплатформенные приложения.
+					\быстро и качественно.

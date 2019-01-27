@@ -1,0 +1,39 @@
+[hyoo_offer_main_page] {
+	flex: 1 1 400px;
+}
+
+[hyoo_offer_private_page] {
+	flex: 1 1 600px;
+}
+
+[hyoo_offer_corporate_page] {
+	flex: 1 1 600px;
+}
+
+[hyoo_offer_menu] {
+	padding: .5rem;
+}
+
+[hyoo_offer_menu] > * {
+	margin: 0;
+	display: block;	
+}
+
+[hyoo_offer] [mol_text_type="strong"] {
+	font-weight: normal;
+	color: yellow;
+}
+
+[hyoo_offer] [mol_text] {
+	box-shadow: none;
+}
+
+[hyoo_offer_image] {
+	width: 25%;
+	box-shadow: none;
+	opacity: .25;
+}
+
+[hyoo_offer_text] {
+	flex: 1 1 50%;
+}

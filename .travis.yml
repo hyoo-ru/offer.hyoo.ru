@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - "6"
+install:
+  - cd ..
+  - mkdir hyoo
+  - mv offer.hyoo.ru hyoo/offer
+  - git init
+  - git remote add origin https://github.com/eigenmethod/mam.git
+  - git pull origin master
+  - npm install
+script:
+  - npm start hyoo/showcase
+  - rm hyoo/showcase/.gitignore
+  - mv hyoo/showcase/- showcase.hyoo.ru
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: .
+  on:
+    branch: master
+notifications:
+  slack: mam-mol:Z7vokFhXaSrMlPXzq6L93bUj
