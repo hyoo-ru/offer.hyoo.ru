@@ -37,3 +37,9 @@
 [hyoo_offer_text] {
 	flex: 1 1 50%;
 }
+
+[hyoo_offer_placeholder] {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
