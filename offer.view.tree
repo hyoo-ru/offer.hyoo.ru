@@ -22,6 +22,9 @@ $hyoo_offer $mol_book
 							! \
 							business \dev
 						title <= dev_title \Разработчикам
+			foot / 
+				<= Github_link $mol_link_iconed
+					uri \https://github.com/eigenmethod/mol			
 		<= Corporate_page $hyoo_offer_corporate
 			title <= corporate_title
 			minimal_width 600
@@ -41,6 +44,5 @@ $hyoo_offer $mol_book
 		arg * business null
 		sub / <= Details_close_icon $mol_icon_cross
 	Placeholder $mol_book_placeholder
-		title <= title
-		sub /
-			<= Image $mol_image uri \https://mol.js.org/app/demo/-/mol/app/demo/placeholder/technology.svg
+		sub / 
+			<= MainView $hyoo_offer_main

@@ -40,6 +40,7 @@
 
 [hyoo_offer_placeholder] {
 	display: flex;
-	align-items: center;
 	justify-content: center;
+    padding: 5rem;
+
 }
