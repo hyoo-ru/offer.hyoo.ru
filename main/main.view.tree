@@ -14,8 +14,6 @@ $hyoo_offer_main $mol_view
 				<= Programming $mol_app_placeholder_advantage
 					image \/hyoo/offer/main/programming.svg
 					title <= programming @ \High-speed applications
-		
-
 $mol_app_placeholder_advantage $mol_view
 	sub /
 		<= Image $mol_image
