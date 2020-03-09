@@ -43,4 +43,3 @@ $hyoo_offer $mol_book
 	Placeholder $mol_book_placeholder
 		title <= title
 		sub /
-			<= Image $mol_image uri \https://mol.js.org/app/demo/-/mol/app/demo/placeholder/technology.svg
