@@ -1,37 +1,34 @@
-[hyoo_offer_main_title] {
+[hyoo_offer_about_title] {
   font-size: 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-[hyoo_offer_mainview] {
+[hyoo_offer_about_advantages] {
   display: flex;
   flex-direction: column;
- 
+  align-items: center;
 }
-[mol_app_placeholder_advantage_image] {
-  width: 15vh;
+[hyoo_offer_about_placeholder_image] {
+  width: 5vw;
   margin: 15px;
   box-shadow: none;
   border: none;
 }
-[hyoo_offer_main_title] img {
-  width: 25vh;
+[hyoo_offer_about_title_image] {
+  width: 10vw;
 }
-[hyoo_offer_main_advantages] {
-  display: flex;
-  flex-direction: column;
-}
-[hyoo_offer_main_technology] {
+
+[hyoo_offer_about_technology] {
   display: flex;
   align-items: center;
 }
-[hyoo_offer_main_code] {
+[hyoo_offer_about_code] {
   display: flex;
   align-items: center;
 }
-[hyoo_offer_main_programming] {
+[hyoo_offer_about_programming] {
   display: flex;
   align-items: center;
 }
