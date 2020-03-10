@@ -25,6 +25,7 @@ $hyoo_offer $mol_book
 			foot / 
 				<= Github_link $mol_link_iconed
 					uri \https://github.com/eigenmethod/mol			
+		<= Main $hyoo_offer_main
 		<= Corporate_page $hyoo_offer_corporate
 			title <= corporate_title
 			minimal_width 600
@@ -43,6 +44,4 @@ $hyoo_offer $mol_book
 	Details_close $mol_link
 		arg * business null
 		sub / <= Details_close_icon $mol_icon_cross
-	Placeholder $mol_book_placeholder
-		sub / 
-			<= MainView $hyoo_offer_main
+			
