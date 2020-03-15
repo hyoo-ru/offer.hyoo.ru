@@ -1899,7 +1899,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $hyoo_offer extends $.$hyoo_offer {
         business(): string;
-        pages(): ($mol_page | $hyoo_offer_private | $hyoo_offer_corporate | $hyoo_offer_dev)[];
+        pages(): ($mol_page | $hyoo_offer_private | $hyoo_offer_corporate | $hyoo_offer_about | $hyoo_offer_dev)[];
     }
 }
 
