@@ -6069,7 +6069,7 @@ var $node = $node || {} ; $node[ "/hyoo/offer/about/programming.svg" ] = "data:i
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/offer/about/about.view.css", "[hyoo_offer_about_head] {\n  font-size: 24px;\n  text-align: center;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n[hyoo_offer_about_advantages] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n[hyoo_offer_about_placeholder_image] {\n  width: 5vw;\n  margin: 15px;\n  box-shadow: none;\n  border: none;\n}\n[hyoo_offer_about_head_image] {\n  width: 10vw;\n}\n\n[hyoo_offer_about_technology] {\n  display: flex;\n  align-items: center;\n}\n[hyoo_offer_about_code] {\n  display: flex;\n  align-items: center;\n}\n[hyoo_offer_about_programming] {\n  display: flex;\n  align-items: center;\n}\n[mol_app_placeholder_advantage] {\n  font-size: 1.5vw;\n}\n");
+    $.$mol_style_attach("hyoo/offer/about/about.view.css", "[hyoo_offer_about_logo] {\n  font-size: 24px;\n  text-align: center;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n[hyoo_offer_about_logo_image] {\n  width: 10vw;\n}\n\n[hyoo_offer_about_advantages] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n[hyoo_offer_about_placeholder_image] {\n  width: 5vw;\n  margin: 15px;\n  box-shadow: none;\n  border: none;\n}\n[hyoo_offer_about_technology] {\n  display: flex;\n  align-items: center;\n}\n[hyoo_offer_about_code] {\n  display: flex;\n  align-items: center;\n}\n[hyoo_offer_about_programming] {\n  display: flex;\n  align-items: center;\n}\n[mol_app_placeholder_advantage] {\n  font-size: 1.5vw;\n}\n");
 })($ || ($ = {}));
 //about.view.css.js.map
 ;
@@ -6078,9 +6078,9 @@ var $;
 (function ($) {
     class $hyoo_offer_about extends $.$mol_page {
         body() {
-            return [this.Head(), this.Advantages()];
+            return [this.Logo(), this.Advantages()];
         }
-        Head() {
+        Logo() {
             return ((obj) => {
                 obj.image = () => "hyoo/offer/about/guild.svg";
                 obj.title = () => this.guild();
@@ -6129,7 +6129,7 @@ var $;
     }
     __decorate([
         $.$mol_mem
-    ], $hyoo_offer_about.prototype, "Head", null);
+    ], $hyoo_offer_about.prototype, "Logo", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_offer_about.prototype, "Advantages", null);
@@ -6285,6 +6285,9 @@ var $;
             return ({
                 "mol_theme": "$mol_theme_dark",
             });
+        }
+        Placeholder() {
+            return null;
         }
         pages() {
             return [this.Main_page(), this.About_page(), this.Corporate_page(), this.Private_page(), this.Dev_page()];

@@ -1869,7 +1869,7 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_offer_about extends $mol_page {
         body(): readonly any[];
-        Head(): $hyoo_offer_about_placeholder;
+        Logo(): $hyoo_offer_about_placeholder;
         guild(): string;
         Advantages(): $mol_view;
         Technology(): $hyoo_offer_about_placeholder;
@@ -1931,6 +1931,7 @@ declare namespace $ {
         attr(): {
             mol_theme: string;
         };
+        Placeholder(): any;
         pages(): readonly any[];
         Main_page(): $$.$mol_page;
         Menu(): $$.$mol_list;

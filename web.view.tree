@@ -1,6 +1,7 @@
 $hyoo_offer $mol_book
 	attr *
 		mol_theme \$mol_theme_dark
+	Placeholder null
 	pages /
 		<= Main_page $mol_page
 			title \HyOO - приложения для бизнеса
@@ -465,7 +466,7 @@ $mol_image $mol_view
 
 $hyoo_offer_about $mol_page
 	body /
-		<= Head $hyoo_offer_about_placeholder
+		<= Logo $hyoo_offer_about_placeholder
 			image \hyoo/offer/about/guild.svg
 			title <= guild @ \
 				\Responsible 
