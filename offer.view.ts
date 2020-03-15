@@ -9,6 +9,7 @@ namespace $.$$ {
 		pages() {
 			return [
 				this.Main_page() ,
+				... ( this.business() === 'about' ? [ this.About_page() ] : [] ) ,
 				... ( this.business() === 'private' ? [ this.Private_page() ] : [] ) ,
 				... ( this.business() === 'corporate' ? [ this.Corporate_page() ] : [] ) ,
 				... ( this.business() === 'dev' ? [ this.Dev_page() ] : [] ) ,
