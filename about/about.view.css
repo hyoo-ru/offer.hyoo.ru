@@ -1,4 +1,4 @@
-[hyoo_offer_about_title] {
+[hyoo_offer_about_head] {
   font-size: 24px;
   text-align: center;
   display: flex;
@@ -16,7 +16,7 @@
   box-shadow: none;
   border: none;
 }
-[hyoo_offer_about_title_image] {
+[hyoo_offer_about_head_image] {
   width: 10vw;
 }
 

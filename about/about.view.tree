@@ -1,8 +1,10 @@
 $hyoo_offer_about $mol_page
 	body /
-		<= Title $hyoo_offer_about_placeholder
+		<= Head $hyoo_offer_about_placeholder
 			image \/hyoo/offer/about/guild.svg
-			title <= guild @ \Responsible \n Developers
+			title <= guild @ \
+				\Responsible 
+				\Developers
 		<= Advantages $mol_view
 			sub /
 				<= Technology $hyoo_offer_about_placeholder
