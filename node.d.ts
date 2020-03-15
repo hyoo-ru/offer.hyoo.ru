@@ -33,13 +33,19 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $mol_type_writable<T> = {
+        -readonly [P in keyof T]: T[P];
+    };
+}
+
+declare namespace $ {
     class $mol_object2 {
         static $: $mol_ambient_context;
         [$mol_ambient_ref]: $mol_ambient_context;
         get $(): $mol_ambient_context;
         set $(next: $mol_ambient_context);
         constructor(init?: (obj: any) => void);
-        static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: Instance) => void): Instance;
+        static create<Instance>(this: new (init?: (instance: any) => void) => Instance, init?: (instance: $mol_type_writable<Instance>) => void): Instance;
         static toString(): any;
         destructor(): void;
         toString(): any;
@@ -179,6 +185,10 @@ declare namespace $ {
     function $mol_conform_handler<Class>(cl: {
         new (...args: any[]): Class;
     }, handler: (target: Class, source: Class) => Class): void;
+    function $mol_conform_array<Value, List extends {
+        [index: number]: Value;
+        length: number;
+    }>(target: List, source: List): List;
 }
 
 declare namespace $ {
@@ -387,6 +397,60 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_decor<Value> {
+        readonly value: Value;
+        constructor(value: Value);
+        prefix(): string;
+        valueOf(): Value;
+        postfix(): string;
+        toString(): string;
+    }
+}
+
+declare namespace $ {
+    type $mol_style_unit_length = '%' | 'px' | 'cm' | 'mm' | 'Q' | 'in' | 'pc' | 'pt' | 'cap' | 'ch' | 'em' | 'rem' | 'ex' | 'ic' | 'lh' | 'rlh' | 'vh' | 'vw' | 'vi' | 'vb' | 'vmin' | 'vmax';
+    class $mol_style_unit<Literal extends $mol_style_unit_length> extends $mol_decor<number> {
+        readonly literal: Literal;
+        constructor(value: number, literal: Literal);
+        postfix(): Literal;
+        static per(value: number): $mol_style_unit<"%">;
+        static px(value: number): $mol_style_unit<"px">;
+        static mm(value: number): $mol_style_unit<"mm">;
+        static cm(value: number): $mol_style_unit<"cm">;
+        static Q(value: number): $mol_style_unit<"Q">;
+        static in(value: number): $mol_style_unit<"in">;
+        static pc(value: number): $mol_style_unit<"pc">;
+        static pt(value: number): $mol_style_unit<"pt">;
+        static cap(value: number): $mol_style_unit<"cap">;
+        static ch(value: number): $mol_style_unit<"ch">;
+        static em(value: number): $mol_style_unit<"em">;
+        static rem(value: number): $mol_style_unit<"rem">;
+        static ex(value: number): $mol_style_unit<"ex">;
+        static ic(value: number): $mol_style_unit<"ic">;
+        static lh(value: number): $mol_style_unit<"lh">;
+        static rlh(value: number): $mol_style_unit<"rlh">;
+        static vh(value: number): $mol_style_unit<"vh">;
+        static vw(value: number): $mol_style_unit<"vw">;
+        static vi(value: number): $mol_style_unit<"vi">;
+        static vb(value: number): $mol_style_unit<"vb">;
+        static vmin(value: number): $mol_style_unit<"vmin">;
+        static vmax(value: number): $mol_style_unit<"vmax">;
+    }
+}
+
+declare namespace $ {
+    type $mol_style_func_name = 'calc' | 'fit-content';
+    class $mol_style_func<Name extends $mol_style_func_name, Value = unknown> extends $mol_decor<Value> {
+        readonly name: Name;
+        constructor(value: Value, name: Name);
+        prefix(): string;
+        postfix(): string;
+        static calc<Value>(value: Value): $mol_style_func<"calc", Value>;
+        static fit_content(value: number | $mol_style_unit<$mol_style_unit_length> | $mol_style_func<'calc'>): $mol_style_func<"fit-content", number | $mol_style_unit<$mol_style_unit_length> | $mol_style_func<"calc", unknown>>;
+    }
+}
+
+declare namespace $ {
     class $mol_window extends $mol_object {
         static size(next?: {
             width: number;
@@ -424,6 +488,10 @@ declare namespace $ {
         static focus(event: FocusEvent): void;
         static blur(event: FocusEvent): void;
     }
+}
+
+declare namespace $ {
+    function $mol_dom_qname(name: string): string;
 }
 
 declare namespace $ {
@@ -472,6 +540,10 @@ declare namespace $ {
     type $mol_type_keys_extract<Input, Lower, Upper> = {
         [Field in keyof Input]: Lower extends Input[Field] ? never : Input[Field] extends Upper ? Field : never;
     }[keyof Input];
+}
+
+declare namespace $ {
+    type $mol_type_pick<Input, Lower, Upper> = Pick<Input, $mol_type_keys_extract<Input, Lower, Upper>>;
 }
 
 declare namespace $ {
@@ -530,9 +602,7 @@ declare namespace $ {
         attr_static(): {
             [key: string]: string | number | boolean | null;
         };
-        attr(): {
-            [key: string]: string | number | boolean | null;
-        };
+        attr(): {};
         style(): {
             [key: string]: string | number;
         };
@@ -547,18 +617,62 @@ declare namespace $ {
         };
         plugins(): readonly $mol_view[];
     }
-    type $mol_view_all = $mol_type_keys_extract<$mol_ambient_context, any, $mol_ambient_context['$mol_view']>;
+    type $mol_view_all = $mol_type_pick<$mol_ambient_context, any, typeof $mol_view>;
 }
 
 declare namespace $ {
 }
 
 declare namespace $ {
-    type $mol_type_keys_exclude<Input, Lower, Upper> = Exclude<keyof Input, $mol_type_keys_extract<Input, Lower, Upper>>;
+    type $mol_type_result<Func> = Func extends (...params: any) => infer Result ? Result : Func extends new (...params: any) => infer Result ? Result : never;
 }
 
 declare namespace $ {
-    type $mol_type_omit<Input, Lower, Upper> = Pick<Input, $mol_type_keys_exclude<Input, Lower, Upper>>;
+    type $mol_type_error<Message> = '$mol_type_error' & {
+        $mol_type_error: Message;
+    };
+}
+
+declare namespace $ {
+    type $mol_type_override<Base, Over> = Omit<Base, keyof Over> & Over;
+}
+
+declare namespace $ {
+    export type $mol_style_properties = Partial<$mol_type_override<CSSStyleDeclaration, Overrides>>;
+    type Common = 'inherit' | 'initial' | 'unset';
+    type Length = number | $mol_style_unit<$mol_style_unit_length> | $mol_style_func<'calc'>;
+    type Size = 'auto' | 'max-content' | 'min-content' | $mol_style_func<'fit-content'> | 0 | Length | Common;
+    type Directions = Size | [Size, Size] | {
+        top?: Size;
+        right?: Size;
+        bottom?: Size;
+        left?: Size;
+    };
+    type Overflow = 'visible' | 'hidden' | 'clip' | 'scroll' | 'auto' | 'overlay' | Common;
+    interface Overrides {
+        alignContent?: 'baseline' | 'start' | 'end' | 'flex-start' | 'flex-end' | 'center' | 'normal' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | ['first' | 'last', 'baseline'] | ['safe' | 'unsafe', 'start' | 'end' | 'flex-start' | 'flex-end'] | Common;
+        display?: 'block' | 'inline' | 'run-in' | 'list-item' | 'none' | 'flow' | 'flow-root' | 'table' | 'flex' | 'grid' | 'contents' | 'table-row-group' | 'table-header-group' | 'table-footer-group' | 'table-column-group' | 'table-row' | 'table-cell' | 'table-column' | 'table-caption' | 'inline-block' | 'inline-table' | 'inline-flex' | 'inline-grid' | 'ruby' | 'ruby-base' | 'ruby-text' | 'ruby-base-container' | 'ruby-text-container' | Common;
+        overflow?: Overflow | {
+            x?: Overflow;
+            y?: Overflow;
+        };
+        webkitOverflowScrolling?: 'auto' | 'touch';
+        width?: Size;
+        minWidth?: Size;
+        maxWidth?: Size;
+        height?: Size;
+        minHeight?: Size;
+        maxHeight?: Size;
+        margin?: Directions;
+        padding?: Directions;
+        flex?: 'none' | 'auto' | {
+            grow?: number | Common;
+            shrink?: number | Common;
+            basis?: Size;
+            direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
+        };
+    }
+    export {};
 }
 
 declare namespace $ {
@@ -570,44 +684,30 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $mol_style_properties = CSSStyleDeclaration & {
-        webkitOverflowScrolling: 'auto' | 'touch';
+    type Descendant<Name extends keyof $mol_view_all, Config> = $mol_style_guard<Extract<$mol_type_result<$mol_view_all[Name]>, $mol_view>, Config>;
+    type Kids<Config> = {
+        [view in keyof Config]: view extends keyof $mol_view_all ? Descendant<view, Config[view]> : $mol_type_error<['Unknown View', view]>;
     };
-}
-
-declare namespace $ {
-    type Elements<Obj extends $mol_view> = $mol_type_omit<{
-        [key in keyof Obj]: Obj[key] extends (id?: any) => infer T ? (unknown extends T ? never : T extends $mol_view ? $mol_style_definition<T> : never) : never;
-    }, unknown, never>;
-    type Pseudos<Obj extends $mol_view> = {
-        [key in $mol_style_pseudo_class | $mol_style_pseudo_element]: $mol_style_definition<Obj>;
+    type Attrs<View extends $mol_view, Config> = {
+        [name in keyof Config]: name extends keyof ReturnType<View['attr']> ? {
+            [val in keyof Config[name]]: $mol_style_guard<View, Config[name][val]>;
+        } : $mol_type_error<['Unknown Attribute', name]>;
     };
-    type Kids<Obj extends $mol_view> = {
-        '>': {
-            [key in $mol_view_all]?: $mol_style_definition<Obj>;
-        };
+    type Medias<View extends $mol_view, Config> = {
+        [query in keyof Config]: $mol_style_guard<View, Config[query]>;
     };
-    type Attrs<Obj extends $mol_view> = {
-        '@': {
-            [key in keyof ReturnType<Obj['attr']>]?: Record<string, $mol_style_definition<Obj>>;
-        };
+    export type $mol_style_guard<View extends $mol_view, Config> = $mol_style_properties & {
+        [key in keyof Config]: key extends keyof $mol_style_properties ? unknown : key extends $mol_style_pseudo_class | $mol_style_pseudo_element ? $mol_style_guard<View, Config[key]> : key extends '>' ? Kids<Config[key]> : key extends '@' ? Attrs<View, Config[key]> : key extends '@media' ? Medias<View, Config[key]> : key extends keyof $mol_view_all ? Descendant<key, Config[key]> : key extends keyof View ? View[key] extends (id?: any) => infer Sub ? Sub extends $mol_view ? $mol_style_guard<Sub, Config[key]> : $mol_type_error<['Wrong Property', key]> : $mol_type_error<['Property is not Element', key]> : $mol_type_error<['Unknown Property', key]>;
     };
-    type Medias<Obj extends $mol_view> = {
-        '@media': Record<string, $mol_style_definition<Obj>>;
-    };
-    type Views<Obj extends $mol_view> = {
-        [key in $mol_view_all]: $mol_style_definition<Obj>;
-    };
-    export type $mol_style_definition<Obj extends $mol_view> = Partial<$mol_style_properties & Pseudos<Obj> & Attrs<Obj> & Medias<Obj> & Kids<Obj> & Elements<Obj> & Views<Obj>>;
     export {};
 }
 
 declare namespace $ {
-    function $mol_style_sheet<Component extends $mol_view>(Component: new () => Component, config: $mol_style_definition<Component>): string;
+    function $mol_style_sheet<Component extends $mol_view, Config extends $mol_style_guard<Component, Config>>(Component: new () => Component, config0: Config): string;
 }
 
 declare namespace $ {
-    function $mol_style_define<Component extends $mol_view>(Component: new () => Component, config: $mol_style_definition<Component>): HTMLStyleElement;
+    function $mol_style_define<Component extends $mol_view, Config extends $mol_style_guard<Component, Config>>(Component: new () => Component, config: Config): HTMLStyleElement;
 }
 
 declare namespace $ {
@@ -953,7 +1053,7 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_check extends $.$mol_check {
-        event_click(next?: Event): void;
+        click(next?: Event): void;
         sub(): any[];
     }
 }
@@ -1582,11 +1682,186 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_state_local<Value> extends $mol_object {
+        static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
+        static native(): Storage | {
+            getItem(key: string): any;
+            setItem(key: string, value: string): void;
+            removeItem(key: string): void;
+        };
+        static value<Value>(key: string, next?: Value, force?: $mol_mem_force): Value | null;
+        prefix(): string;
+        value(key: string, next?: Value): Value;
+    }
+}
+
+declare namespace $ {
+    function $mol_base64_decode(base64: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_decode_node(base64Str: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_encode(src: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    function $mol_base64_encode_node(str: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    type $mol_buffer_encoding = 'utf8' | 'base64';
+    type $mol_buffer_encoding_full = $mol_buffer_encoding | 'ibm866' | 'iso-8859-2' | 'iso-8859-3' | 'iso-8859-4' | 'iso-8859-5' | 'iso-8859-6' | 'iso-8859-7' | 'iso-8859-8' | 'iso-8859-8i' | 'iso-8859-10' | 'iso-8859-13' | 'iso-8859-14' | 'iso-8859-15' | 'iso-8859-16' | 'koi8-r' | 'koi8-u' | 'koi8-r' | 'macintosh' | 'windows-874' | 'windows-1250' | 'windows-1251' | 'windows-1252' | 'windows-1253' | 'windows-1254' | 'windows-1255' | 'windows-1256' | 'windows-1257' | 'windows-1258' | 'x-mac-cyrillic' | 'gbk' | 'gb18030' | 'hz-gb-2312' | 'big5' | 'euc-jp' | 'iso-2022-jp' | 'shift-jis' | 'euc-kr' | 'iso-2022-kr' | 'utf-16be' | 'utf-16le' | 'x-user-defined' | 'replacement';
+    class $mol_buffer extends $mol_object2 {
+        original: Uint8Array;
+        get length(): number;
+        static from(value: string | Uint8Array, code?: $mol_buffer_encoding): $mol_buffer;
+        toString(code?: $mol_buffer_encoding_full): string;
+    }
+}
+
+declare namespace $ {
+    type $mol_file_type = 'file' | 'dir' | 'link';
+    type $mol_file_content = string | $mol_buffer | Uint8Array;
+    interface $mol_file_stat {
+        type: $mol_file_type;
+        size: number;
+        atime: Date;
+        mtime: Date;
+        ctime: Date;
+    }
+    class $mol_file_not_found extends Error {
+    }
+    abstract class $mol_file extends $mol_object {
+        static absolute(path: string): $mol_file;
+        static relative(path: string): $mol_file;
+        path(): string;
+        parent(): $mol_file;
+        abstract stat(next?: $mol_file_stat, force?: $mol_mem_force): $mol_file_stat;
+        reset(): void;
+        version(): string;
+        abstract ensure(next?: boolean): boolean;
+        abstract watcher(): {
+            destructor(): void;
+        };
+        exists(next?: boolean): boolean;
+        type(): $mol_file_type;
+        name(): string;
+        ext(): string;
+        abstract buffer(next?: $mol_buffer, force?: $mol_mem_force): $mol_buffer;
+        text(next?: string, force?: $mol_mem_force): string;
+        fail(error: Error): void;
+        buffer_cached(buffer: $mol_buffer): void;
+        text_cached(content: string): void;
+        abstract sub(): $mol_file[];
+        abstract resolve(path: string): $mol_file;
+        abstract relate(base?: $mol_file): string;
+        abstract append(next: $mol_file_content): void;
+        find(include?: RegExp, exclude?: RegExp): $mol_file[];
+    }
+}
+
+declare namespace $ {
+    class $mol_file_node extends $mol_file {
+        static absolute(path: string): $mol_file_node;
+        static relative(path: string): $mol_file_node;
+        watcher(): {
+            destructor(): void;
+        };
+        stat(next?: $mol_file_stat, force?: $mol_mem_force): $mol_file_stat;
+        ensure(next?: boolean): boolean;
+        buffer(next?: $mol_buffer, force?: $mol_mem_force): $mol_buffer;
+        sub(): $mol_file[];
+        resolve(path: string): $mol_file;
+        relate(base?: $mol_file): string;
+        append(next: $mol_file_content): void;
+    }
+}
+
+declare namespace $ {
+    interface $mol_locale_dict {
+        [key: string]: string;
+    }
+    class $mol_locale extends $mol_object {
+        static lang_default(): string;
+        static lang(next?: string): string;
+        static source(lang: string): any;
+        static texts(lang: string, next?: $mol_locale_dict): $mol_locale_dict;
+        static text(key: string): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_image extends $mol_view {
+        dom_name(): string;
+        field(): {
+            src: string;
+            alt: string;
+        };
+        uri(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $hyoo_offer_about extends $mol_page {
+        body(): readonly any[];
+        Head(): $hyoo_offer_about_placeholder;
+        guild(): string;
+        Advantages(): $mol_view;
+        Technology(): $hyoo_offer_about_placeholder;
+        technology(): string;
+        Code(): $hyoo_offer_about_placeholder;
+        code_rate(): string;
+        Programming(): $hyoo_offer_about_placeholder;
+        programming(): string;
+    }
+}
+declare namespace $ {
+    class $hyoo_offer_about_placeholder extends $mol_view {
+        sub(): readonly any[];
+        Image(): $mol_image;
+        image(): string;
+        title(): string;
+    }
+}
+
+declare namespace $ {
     class $hyoo_offer_dev extends $mol_page {
         body(): readonly any[];
         Text(): $$.$mol_text;
         text(): string;
     }
+}
+
+declare namespace $ {
+    class $mol_link_iconed extends $mol_link {
+        sub(): readonly any[];
+        Icon(): $mol_image;
+        icon(): string;
+        content(): readonly any[];
+        title(): string;
+        host(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_link_iconed extends $.$mol_link_iconed {
+        icon(): string;
+        host(): string;
+        title(): string;
+        sub(): any[];
+    }
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {
@@ -1603,18 +1878,21 @@ declare namespace $ {
         pages(): readonly any[];
         Main_page(): $$.$mol_page;
         Menu(): $$.$mol_list;
+        About_link(): $$.$mol_link;
+        about_title(): string;
         Corporate_link(): $$.$mol_link;
         corporate_title(): string;
         Private_link(): $$.$mol_link;
         private_title(): string;
         Dev_link(): $$.$mol_link;
         dev_title(): string;
+        Github_link(): $$.$mol_link_iconed;
+        About_page(): $hyoo_offer_about;
         Corporate_page(): $hyoo_offer_corporate;
         Private_page(): $hyoo_offer_private;
         Dev_page(): $hyoo_offer_dev;
         Details_close(): $$.$mol_link;
         Details_close_icon(): $mol_icon_cross;
-        Placeholder(): $mol_book_placeholder;
     }
 }
 

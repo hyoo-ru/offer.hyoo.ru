@@ -7,21 +7,34 @@ $hyoo_offer $mol_book
 			minimal_width 400
 			body /
 				<= Menu $mol_list rows /
+					<= About_link $mol_link
+						arg *
+							! \
+							business \about
+						title <= about_title @ \About
 					<= Corporate_link $mol_link
 						arg *
 							! \
 							business \corporate
-						title <= corporate_title \Корпоративным клиентам
+						title <= corporate_title @ \Corporative clients
 					<= Private_link $mol_link
 						arg *
 							! \
 							business \private
-						title <= private_title \Частному бизнесу
+						title <= private_title @ \Private business
 					<= Dev_link $mol_link
 						arg *
 							! \
 							business \dev
-						title <= dev_title \Разработчикам
+						title <= dev_title @ \Developers
+			foot / 
+				<= Github_link $mol_link_iconed
+					uri \https://github.com/eigenmethod/mol			
+		<= About_page $hyoo_offer_about
+			title <= about_title
+			minimal_width 600
+			event_top?val <=> event_front_up?val
+			tools / <= Details_close
 		<= Corporate_page $hyoo_offer_corporate
 			title <= corporate_title
 			minimal_width 600
@@ -40,9 +53,7 @@ $hyoo_offer $mol_book
 	Details_close $mol_link
 		arg * business null
 		sub / <= Details_close_icon $mol_icon_cross
-	Placeholder $mol_book_placeholder
-		title <= title
-		sub /
+			
 
 $mol_page $mol_view
 	sub /
@@ -445,6 +456,37 @@ $mol_touch $mol_plugin
 $mol_ghost $mol_view
 	Sub $mol_view
 
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+
+$hyoo_offer_about $mol_page
+	body /
+		<= Head $hyoo_offer_about_placeholder
+			image \hyoo/offer/about/guild.svg
+			title <= guild @ \
+				\Responsible 
+				\Developers
+		<= Advantages $mol_view
+			sub /
+				<= Technology $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/technology.svg
+					title <= technology @ \Flexible adaptive interface
+				<= Code $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/code_rate.svg
+					title <= code_rate @ \Quick and easy development
+				<= Programming $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/programming.svg
+					title <= programming @ \High-speed applications
+$hyoo_offer_about_placeholder $mol_view
+	sub /
+		<= Image $mol_image
+			uri <= image \
+		<= title \
+
 $hyoo_offer_dev $mol_page
 	body /
 		<= Text $mol_text
@@ -462,5 +504,14 @@ $hyoo_offer_dev $mol_page
 				\
 				\# [Стать партнёром](mailto:offer-dev@hyoo.ru)
 				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
+
+$mol_link_iconed $mol_link
+	sub /
+		<= Icon $mol_image
+			uri <= icon \
+			title \
+	content /
+		<= title <= uri
+	host \
 
 $mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
