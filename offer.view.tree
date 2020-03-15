@@ -1,6 +1,7 @@
 $hyoo_offer $mol_book
 	attr *
 		mol_theme \$mol_theme_dark
+	Placeholder null
 	pages /
 		<= Main_page $mol_page
 			title \HyOO - приложения для бизнеса
