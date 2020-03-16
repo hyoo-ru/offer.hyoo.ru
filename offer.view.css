@@ -1,14 +1,19 @@
 [hyoo_offer_main_page] {
-	flex: 1 1 400px;
+	flex: 1 1 300px;
+}
+[hyoo_offer_corporate_page]{
+	flex: 1000 1 600px;
+}
+[hyoo_offer_private_page]{
+	flex: 1000 1 600px;
+}
+[hyoo_offer_about_page]{
+	flex: 1000 1 600px;
+}
+[hyoo_offer_dev_page]{
+	flex: 1000 1 600px;
 }
 
-[hyoo_offer_private_page] {
-	flex: 1 1 600px;
-}
-
-[hyoo_offer_corporate_page] {
-	flex: 1 1 600px;
-}
 
 [hyoo_offer_menu] {
 	padding: .5rem;
