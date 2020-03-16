@@ -1,38 +1,47 @@
 [hyoo_offer_main_page] {
-  flex: 1 1 300px;
+	flex: 1 1 300px;
 }
-[hyoo_offer_corporate_page] {
-  flex: 1000 1 600px;
+[hyoo_offer_corporate_page]{
+	flex: 1000 1 600px;
 }
-[hyoo_offer_private_page] {
-  flex: 1000 1 600px;
+[hyoo_offer_private_page]{
+	flex: 1000 1 600px;
 }
-[hyoo_offer_about_page] {
-  flex: 1000 1 600px;
+[hyoo_offer_about_page]{
+	flex: 1000 1 600px;
 }
-[hyoo_offer_dev_page] {
-  flex: 1000 1 600px;
+[hyoo_offer_dev_page]{
+	flex: 1000 1 600px;
 }
+
+
 [hyoo_offer_menu] {
-  padding: 0.5rem;
+	padding: .5rem;
 }
+
 [hyoo_offer_menu] > * {
-  margin: 0;
-  display: block;
+	margin: 0;
+	display: block;	
 }
+
 [hyoo_offer] [mol_text_type="strong"] {
-  font-weight: normal;
-  color: yellow;
+	font-weight: normal;
+	color: yellow;
 }
 
 [hyoo_offer] [mol_text] {
-  box-shadow: none;
+	box-shadow: none;
 }
+
 [hyoo_offer_image] {
-  width: 25%;
-  box-shadow: none;
-  opacity: 0.25;
+	width: 25%;
+	box-shadow: none;
+	opacity: .25;
 }
+
 [hyoo_offer_text] {
-  flex: 1 1 50%;
+	flex: 1 1 50%;
+}
+[mol_page_body]{
+	flex: 1 1 300px;
 }
