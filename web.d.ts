@@ -1494,6 +1494,14 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $hyoo_offer_corporate extends $mol_page {
+        body(): readonly any[];
+        Text(): $$.$mol_text;
+        text(): string;
+    }
+}
+
+declare namespace $ {
     class $hyoo_offer_private extends $mol_page {
         body(): readonly any[];
         Text(): $$.$mol_text;
@@ -1502,7 +1510,196 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $hyoo_offer_corporate extends $mol_page {
+    class $mol_state_local<Value> extends $mol_object {
+        static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
+        static native(): Storage | {
+            getItem(key: string): any;
+            setItem(key: string, value: string): void;
+            removeItem(key: string): void;
+        };
+        static value<Value>(key: string, next?: Value, force?: $mol_mem_force): Value | null;
+        prefix(): string;
+        value(key: string, next?: Value): Value;
+    }
+}
+
+declare namespace $ {
+}
+
+declare var $node: any;
+
+declare namespace $ {
+    function $mol_base64_decode(base64: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_decode_web(base64Str: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_encode(src: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    function $mol_base64_encode_web(str: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    type $mol_buffer_encoding = 'utf8' | 'base64';
+    type $mol_buffer_encoding_full = $mol_buffer_encoding | 'ibm866' | 'iso-8859-2' | 'iso-8859-3' | 'iso-8859-4' | 'iso-8859-5' | 'iso-8859-6' | 'iso-8859-7' | 'iso-8859-8' | 'iso-8859-8i' | 'iso-8859-10' | 'iso-8859-13' | 'iso-8859-14' | 'iso-8859-15' | 'iso-8859-16' | 'koi8-r' | 'koi8-u' | 'koi8-r' | 'macintosh' | 'windows-874' | 'windows-1250' | 'windows-1251' | 'windows-1252' | 'windows-1253' | 'windows-1254' | 'windows-1255' | 'windows-1256' | 'windows-1257' | 'windows-1258' | 'x-mac-cyrillic' | 'gbk' | 'gb18030' | 'hz-gb-2312' | 'big5' | 'euc-jp' | 'iso-2022-jp' | 'shift-jis' | 'euc-kr' | 'iso-2022-kr' | 'utf-16be' | 'utf-16le' | 'x-user-defined' | 'replacement';
+    class $mol_buffer extends $mol_object2 {
+        native: Uint8Array;
+        get length(): number;
+        static from(value: string | Uint8Array, code?: $mol_buffer_encoding): $mol_buffer;
+        toString(code?: $mol_buffer_encoding_full): any;
+    }
+}
+
+declare namespace $ {
+    function $mol_dom_parse(text: string, type?: SupportedType): Document;
+}
+
+declare namespace $ {
+    class $mol_fetch_response extends $mol_object2 {
+        readonly native: Response;
+        constructor(native: Response);
+        headers(): Headers;
+        mime(): string;
+        stream(): ReadableStream<Uint8Array>;
+        text(): string;
+        json(): any;
+        buffer(): ArrayBuffer;
+        xml(): Document;
+        xhtml(): Document;
+        html(): Document;
+    }
+    class $mol_fetch extends $mol_object2 {
+        static request: (input: RequestInfo, init?: RequestInit) => Response;
+        static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
+        static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array>;
+        static text(input: RequestInfo, init?: RequestInit): string;
+        static json(input: RequestInfo, init?: RequestInit): any;
+        static buffer(input: RequestInfo, init?: RequestInit): void;
+        static xml(input: RequestInfo, init?: RequestInit): Document;
+        static xhtml(input: RequestInfo, init?: RequestInit): Document;
+        static html(input: RequestInfo, init?: RequestInit): Document;
+    }
+}
+
+declare namespace $ {
+    type $mol_file_type = 'file' | 'dir' | 'link';
+    type $mol_file_content = string | $mol_buffer | Uint8Array;
+    interface $mol_file_stat {
+        type: $mol_file_type;
+        size: number;
+        atime: Date;
+        mtime: Date;
+        ctime: Date;
+    }
+    class $mol_file_not_found extends Error {
+    }
+    abstract class $mol_file extends $mol_object {
+        static absolute(path: string): $mol_file;
+        static relative(path: string): $mol_file;
+        path(): string;
+        parent(): $mol_file;
+        abstract stat(next?: $mol_file_stat, force?: $mol_mem_force): $mol_file_stat;
+        reset(): void;
+        version(): string;
+        abstract ensure(next?: boolean): boolean;
+        abstract watcher(): {
+            destructor(): void;
+        };
+        exists(next?: boolean): boolean;
+        type(): $mol_file_type;
+        name(): string;
+        ext(): string;
+        abstract buffer(next?: $mol_buffer, force?: $mol_mem_force): $mol_buffer;
+        text(next?: string, force?: $mol_mem_force): any;
+        fail(error: Error): void;
+        buffer_cached(buffer: $mol_buffer): void;
+        text_cached(content: string): void;
+        abstract sub(): $mol_file[];
+        abstract resolve(path: string): $mol_file;
+        abstract relate(base?: $mol_file): string;
+        abstract append(next: $mol_file_content): void;
+        find(include?: RegExp, exclude?: RegExp): $mol_file[];
+    }
+}
+
+declare namespace $ {
+    class $mol_file_web extends $mol_file {
+        static absolute(path: string): $mol_file_web;
+        static relative(path: string): $mol_file_web;
+        static base: string;
+        buffer(next?: $mol_buffer, force?: $mol_mem_force): $mol_buffer;
+        watcher(): {
+            destructor(): void;
+        };
+        stat(next?: $mol_file_stat, force?: $mol_mem_force): $mol_file_stat;
+        resolve(path: string): $mol_file_web;
+        ensure(next?: boolean): boolean;
+        sub(): $mol_file[];
+        relate(base?: $mol_file): string;
+        append(next: $mol_file_content): void;
+    }
+}
+
+declare namespace $ {
+    interface $mol_locale_dict {
+        [key: string]: string;
+    }
+    class $mol_locale extends $mol_object {
+        static lang_default(): string;
+        static lang(next?: string): string;
+        static source(lang: string): any;
+        static texts(lang: string, next?: $mol_locale_dict): $mol_locale_dict;
+        static text(key: string): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_image extends $mol_view {
+        dom_name(): string;
+        field(): {
+            src: string;
+            alt: string;
+        };
+        uri(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $hyoo_offer_about extends $mol_page {
+        body(): readonly any[];
+        Logo(): $hyoo_offer_about_placeholder;
+        guild(): string;
+        Advantages(): $mol_view;
+        Technology(): $hyoo_offer_about_placeholder;
+        technology(): string;
+        Code(): $hyoo_offer_about_placeholder;
+        code_rate(): string;
+        Programming(): $hyoo_offer_about_placeholder;
+        programming(): string;
+    }
+}
+declare namespace $ {
+    class $hyoo_offer_about_placeholder extends $mol_view {
+        sub(): readonly any[];
+        Image(): $mol_image;
+        image(): string;
+        title(): string;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_offer_dev extends $mol_page {
         body(): readonly any[];
         Text(): $$.$mol_text;
         text(): string;
@@ -1701,203 +1898,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_state_local<Value> extends $mol_object {
-        static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
-        static native(): Storage | {
-            getItem(key: string): any;
-            setItem(key: string, value: string): void;
-            removeItem(key: string): void;
-        };
-        static value<Value>(key: string, next?: Value, force?: $mol_mem_force): Value | null;
-        prefix(): string;
-        value(key: string, next?: Value): Value;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    function $mol_base64_decode(base64: string): Uint8Array;
-}
-
-declare namespace $ {
-    function $mol_base64_decode_web(base64Str: string): Uint8Array;
-}
-
-declare namespace $ {
-    function $mol_base64_encode(src: string | Uint8Array): string;
-}
-
-declare namespace $ {
-    function $mol_base64_encode_web(str: string | Uint8Array): string;
-}
-
-declare namespace $ {
-    type $mol_buffer_encoding = 'utf8' | 'base64';
-    type $mol_buffer_encoding_full = $mol_buffer_encoding | 'ibm866' | 'iso-8859-2' | 'iso-8859-3' | 'iso-8859-4' | 'iso-8859-5' | 'iso-8859-6' | 'iso-8859-7' | 'iso-8859-8' | 'iso-8859-8i' | 'iso-8859-10' | 'iso-8859-13' | 'iso-8859-14' | 'iso-8859-15' | 'iso-8859-16' | 'koi8-r' | 'koi8-u' | 'koi8-r' | 'macintosh' | 'windows-874' | 'windows-1250' | 'windows-1251' | 'windows-1252' | 'windows-1253' | 'windows-1254' | 'windows-1255' | 'windows-1256' | 'windows-1257' | 'windows-1258' | 'x-mac-cyrillic' | 'gbk' | 'gb18030' | 'hz-gb-2312' | 'big5' | 'euc-jp' | 'iso-2022-jp' | 'shift-jis' | 'euc-kr' | 'iso-2022-kr' | 'utf-16be' | 'utf-16le' | 'x-user-defined' | 'replacement';
-    class $mol_buffer extends $mol_object2 {
-        original: Uint8Array;
-        get length(): number;
-        static from(value: string | Uint8Array, code?: $mol_buffer_encoding): $mol_buffer;
-        toString(code?: $mol_buffer_encoding_full): string;
-    }
-}
-
-declare namespace $ {
-    function $mol_dom_parse(text: string, type?: SupportedType): Document;
-}
-
-declare var $node: any;
-
-declare namespace $ {
-    class $mol_fetch_response extends $mol_object2 {
-        readonly native: Response;
-        constructor(native: Response);
-        headers(): Headers;
-        mime(): string;
-        stream(): ReadableStream<Uint8Array>;
-        text(): string;
-        json(): any;
-        buffer(): ArrayBuffer;
-        xml(): Document;
-        xhtml(): Document;
-        html(): Document;
-    }
-    class $mol_fetch extends $mol_object2 {
-        static request: (input: RequestInfo, init?: RequestInit) => Response;
-        static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
-        static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array>;
-        static text(input: RequestInfo, init?: RequestInit): string;
-        static json(input: RequestInfo, init?: RequestInit): any;
-        static buffer(input: RequestInfo, init?: RequestInit): void;
-        static xml(input: RequestInfo, init?: RequestInit): Document;
-        static xhtml(input: RequestInfo, init?: RequestInit): Document;
-        static html(input: RequestInfo, init?: RequestInit): Document;
-    }
-}
-
-declare namespace $ {
-    type $mol_file_type = 'file' | 'dir' | 'link';
-    type $mol_file_content = string | $mol_buffer | Uint8Array;
-    interface $mol_file_stat {
-        type: $mol_file_type;
-        size: number;
-        atime: Date;
-        mtime: Date;
-        ctime: Date;
-    }
-    class $mol_file_not_found extends Error {
-    }
-    abstract class $mol_file extends $mol_object {
-        static absolute(path: string): $mol_file;
-        static relative(path: string): $mol_file;
-        path(): string;
-        parent(): $mol_file;
-        abstract stat(next?: $mol_file_stat, force?: $mol_mem_force): $mol_file_stat;
-        reset(): void;
-        version(): string;
-        abstract ensure(next?: boolean): boolean;
-        abstract watcher(): {
-            destructor(): void;
-        };
-        exists(next?: boolean): boolean;
-        type(): $mol_file_type;
-        name(): string;
-        ext(): string;
-        abstract buffer(next?: $mol_buffer, force?: $mol_mem_force): $mol_buffer;
-        text(next?: string, force?: $mol_mem_force): string;
-        fail(error: Error): void;
-        buffer_cached(buffer: $mol_buffer): void;
-        text_cached(content: string): void;
-        abstract sub(): $mol_file[];
-        abstract resolve(path: string): $mol_file;
-        abstract relate(base?: $mol_file): string;
-        abstract append(next: $mol_file_content): void;
-        find(include?: RegExp, exclude?: RegExp): $mol_file[];
-    }
-}
-
-declare namespace $ {
-    class $mol_file_web extends $mol_file {
-        static absolute(path: string): $mol_file_web;
-        static relative(path: string): $mol_file_web;
-        static base: string;
-        buffer(next?: $mol_buffer, force?: $mol_mem_force): $mol_buffer;
-        watcher(): {
-            destructor(): void;
-        };
-        stat(next?: $mol_file_stat, force?: $mol_mem_force): $mol_file_stat;
-        resolve(path: string): $mol_file_web;
-        ensure(next?: boolean): boolean;
-        sub(): $mol_file[];
-        relate(base?: $mol_file): string;
-        append(next: $mol_file_content): void;
-    }
-}
-
-declare namespace $ {
-    interface $mol_locale_dict {
-        [key: string]: string;
-    }
-    class $mol_locale extends $mol_object {
-        static lang_default(): string;
-        static lang(next?: string): string;
-        static source(lang: string): any;
-        static texts(lang: string, next?: $mol_locale_dict): $mol_locale_dict;
-        static text(key: string): string;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_image extends $mol_view {
-        dom_name(): string;
-        field(): {
-            src: string;
-            alt: string;
-        };
-        uri(): string;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $hyoo_offer_about extends $mol_page {
-        body(): readonly any[];
-        Logo(): $hyoo_offer_about_placeholder;
-        guild(): string;
-        Advantages(): $mol_view;
-        Technology(): $hyoo_offer_about_placeholder;
-        technology(): string;
-        Code(): $hyoo_offer_about_placeholder;
-        code_rate(): string;
-        Programming(): $hyoo_offer_about_placeholder;
-        programming(): string;
-    }
-}
-declare namespace $ {
-    class $hyoo_offer_about_placeholder extends $mol_view {
-        sub(): readonly any[];
-        Image(): $mol_image;
-        image(): string;
-        title(): string;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_offer_dev extends $mol_page {
-        body(): readonly any[];
-        Text(): $$.$mol_text;
-        text(): string;
-    }
-}
-
-declare namespace $ {
     class $mol_link_iconed extends $mol_link {
         sub(): readonly any[];
         Icon(): $mol_image;
@@ -1956,7 +1956,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $hyoo_offer extends $.$hyoo_offer {
         business(): string;
-        pages(): ($mol_page | $hyoo_offer_private | $hyoo_offer_corporate | $hyoo_offer_about | $hyoo_offer_dev)[];
+        pages(): ($mol_page | $hyoo_offer_corporate | $hyoo_offer_private | $hyoo_offer_about | $hyoo_offer_dev)[];
     }
 }
 
