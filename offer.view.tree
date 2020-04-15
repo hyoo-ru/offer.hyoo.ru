@@ -23,7 +23,7 @@ $hyoo_offer $mol_book
 							business \dev
 						title <= dev_title @ \Developers	
 		<= About_page $hyoo_offer_about
-			title <= about_title
+			title <= about_title @ \About
 			minimal_width 600
 			event_top?val <=> event_front_up?val
 			tools / <= Details_close
