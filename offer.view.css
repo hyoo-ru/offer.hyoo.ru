@@ -1,5 +1,15 @@
-[hyoo_offer_main_page] {
-	flex: 1 1 400px;
+[hyoo_offer_about_page] {
+	flex: 1 1 600px;
+}
+
+[hyoo_offer_about_body] {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+}
+
+[hyoo_offer_dev_page] {
+	flex: 1 1 600px;
 }
 
 [hyoo_offer_private_page] {

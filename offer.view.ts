@@ -3,7 +3,7 @@ namespace $.$$ {
 	export class $hyoo_offer extends $.$hyoo_offer {
 
 		business() {
-			return this.$.$mol_state_arg.value( 'business' )
+			return this.$.$mol_state_arg.value( 'business' ) ?? 'about'
 		}
 
 		pages() {

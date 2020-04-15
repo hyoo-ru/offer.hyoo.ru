@@ -7,11 +7,6 @@ $hyoo_offer $mol_book
 			minimal_width 400
 			body /
 				<= Menu $mol_list rows /
-					<= About_link $mol_link
-						arg *
-							! \
-							business \about
-						title <= about_title @ \About
 					<= Corporate_link $mol_link
 						arg *
 							! \
