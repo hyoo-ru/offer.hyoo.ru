@@ -1,25 +1,30 @@
-[hyoo_offer_about_head] {
+[hyoo_offer_about_placeholder] {
+	flex-direction: column;
+	margin: 1rem;
+}
+
+[hyoo_offer_about_logo] {
   font-size: 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
 }
-[hyoo_offer_about_advantages] {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-[hyoo_offer_about_placeholder_image] {
-  width: 5vw;
-  margin: 15px;
-  box-shadow: none;
-  border: none;
-}
-[hyoo_offer_about_head_image] {
+[hyoo_offer_about_logo_image] {
   width: 10vw;
 }
 
+[hyoo_offer_about_advantages] {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+[hyoo_offer_about_placeholder_image] {
+  width: 14vmin;
+  box-shadow: none;
+  border: none;
+}
 [hyoo_offer_about_technology] {
   display: flex;
   align-items: center;

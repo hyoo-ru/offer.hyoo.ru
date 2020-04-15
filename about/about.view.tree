@@ -1,6 +1,6 @@
-$hyoo_offer_about $mol_page
-	body /
-		<= Head $hyoo_offer_about_placeholder
+$hyoo_offer_about $mol_view
+	sub /
+		<= Logo $hyoo_offer_about_placeholder
 			image \hyoo/offer/about/guild.svg
 			title <= guild @ \
 				\Responsible 

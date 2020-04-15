@@ -1,23 +1,24 @@
-[hyoo_offer_about_page] {
-	flex: 1 1 600px;
+[hyoo_offer_main_page] {
+	flex: 1 1 300px;
 }
 
-[hyoo_offer_about_body] {
+[hyoo_offer_about_page] {
+	flex: 1 10 600px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
 }
 
 [hyoo_offer_dev_page] {
-	flex: 1 1 600px;
+	flex: 1 10 600px;
 }
 
-[hyoo_offer_private_page] {
-	flex: 1 1 600px;
+[hyoo_offer_private_page]{
+	flex: 1 10 600px;
 }
 
-[hyoo_offer_corporate_page] {
-	flex: 1 1 600px;
+[hyoo_offer_corporate_page]{
+	flex: 1 10 600px;
 }
 
 [hyoo_offer_menu] {
