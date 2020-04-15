@@ -1406,6 +1406,12 @@ var $;
 //mem.test.js.map
 ;
 "use strict";
+//param.test.js.map
+;
+"use strict";
+//result.test.js.map
+;
+"use strict";
 var $;
 (function ($) {
     $.$mol_test({
@@ -1597,25 +1603,6 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
-        'null by default'() {
-            const key = String(Math.random());
-            $.$mol_assert_equal($.$mol_state_session.value(key), null);
-        },
-        'storing'() {
-            const key = String(Math.random());
-            $.$mol_state_session.value(key, '$mol_state_session_test');
-            $.$mol_assert_equal($.$mol_state_session.value(key), '$mol_state_session_test');
-            $.$mol_state_session.value(key, null);
-            $.$mol_assert_equal($.$mol_state_session.value(key), null);
-        },
-    });
-})($ || ($ = {}));
-//session.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
         'const returns stored value'() {
             const foo = { bar: $.$mol_const(Math.random()) };
             $.$mol_assert_equal(foo.bar(), foo.bar());
@@ -1713,6 +1700,20 @@ var $;
     });
 })($ || ($ = {}));
 //timeout.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_func_name_test = (() => () => { })();
+    $.$mol_test({
+        'FQN of anon function'() {
+            $.$mol_assert_equal($.$mol_func_name_test.name, '');
+            $.$mol_assert_equal($.$mol_func_name($.$mol_func_name_test), '$mol_func_name_test');
+            $.$mol_assert_equal($.$mol_func_name_test.name, '$mol_func_name_test');
+        },
+    });
+})($ || ($ = {}));
+//name.test.js.map
 ;
 "use strict";
 //extract.test.js.map
@@ -1819,7 +1820,88 @@ var $;
 //view.test.js.map
 ;
 "use strict";
-//result.test.js.map
+var $;
+(function ($) {
+    $.$mol_test({
+        'local get set delete'() {
+            var key = '$mol_state_local_test:' + Math.random();
+            $.$mol_assert_equal($.$mol_state_local.value(key), null);
+            $.$mol_state_local.value(key, 123);
+            $.$mol_assert_equal($.$mol_state_local.value(key), 123);
+            $.$mol_state_local.value(key, null);
+            $.$mol_assert_equal($.$mol_state_local.value(key), null);
+        },
+    });
+})($ || ($ = {}));
+//local.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test_mocks.push(context => {
+        class $mol_state_local_mock extends $.$mol_state_local {
+            static value(key, next = this.state[key], force) {
+                return this.state[key] = (next || null);
+            }
+        }
+        $mol_state_local_mock.state = {};
+        __decorate([
+            $.$mol_mem_key
+        ], $mol_state_local_mock, "value", null);
+        context.$mol_state_local = $mol_state_local_mock;
+    });
+})($ || ($ = {}));
+//local.mock.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'decode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded), str);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded, 'utf8'), str);
+        },
+        'decode empty string'() {
+            const encoded = new Uint8Array([]);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded), '');
+        },
+    });
+})($ || ($ = {}));
+//decode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'encode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_like($.$mol_charset_encode(str), encoded);
+        },
+    });
+})($ || ($ = {}));
+//encode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'null by default'() {
+            const key = String(Math.random());
+            $.$mol_assert_equal($.$mol_state_session.value(key), null);
+        },
+        'storing'() {
+            const key = String(Math.random());
+            $.$mol_state_session.value(key, '$mol_state_session_test');
+            $.$mol_assert_equal($.$mol_state_session.value(key), '$mol_state_session_test');
+            $.$mol_state_session.value(key, null);
+            $.$mol_assert_equal($.$mol_state_session.value(key), null);
+        },
+    });
+})($ || ($ = {}));
+//session.test.js.map
 ;
 "use strict";
 var $;
@@ -1859,9 +1941,8 @@ var $;
             const { px, per } = $.$mol_style_unit;
             const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
                 width: calc(`${per(100)} - ${px(1)}`),
-                height: fit_content(per(50)),
             });
-            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\twidth: calc(100% - 1px);\n\theight: fit-content(50%);\n}\n');
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\twidth: calc(100% - 1px);\n}\n');
         },
         'property groups'() {
             class $mol_style_sheet_test extends $.$mol_view {
@@ -1960,6 +2041,28 @@ var $;
                 },
             });
             $.$mol_assert_equal(sheet, '[mol_style_sheet_test2_list_item] {\n\tcolor: red;\n\tdisplay: block;\n}\n');
+        },
+        'component element styles with block attribute value'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+                Item() { return new $.$mol_view; }
+                attr() {
+                    return {
+                        mol_theme: '$mol_theme_dark'
+                    };
+                }
+            }
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                '@': {
+                    mol_theme: {
+                        '$mol_theme_dark': {
+                            Item: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test][mol_theme="$mol_theme_dark"] [mol_style_sheet_test_item] {\n\tcolor: red;\n}\n');
         },
         'inner component styles by class'() {
             const sheet = $.$mol_style_sheet($mol_style_sheet_test2, {
@@ -2110,122 +2213,6 @@ var $;
 //md.test.js.map
 ;
 "use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'local get set delete'() {
-            var key = '$mol_state_local_test:' + Math.random();
-            $.$mol_assert_equal($.$mol_state_local.value(key), null);
-            $.$mol_state_local.value(key, 123);
-            $.$mol_assert_equal($.$mol_state_local.value(key), 123);
-            $.$mol_state_local.value(key, null);
-            $.$mol_assert_equal($.$mol_state_local.value(key), null);
-        },
-    });
-})($ || ($ = {}));
-//local.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test_mocks.push(context => {
-        class $mol_state_local_mock extends $.$mol_state_local {
-            static value(key, next = this.state[key], force) {
-                return this.state[key] = (next || null);
-            }
-        }
-        $mol_state_local_mock.state = {};
-        __decorate([
-            $.$mol_mem_key
-        ], $mol_state_local_mock, "value", null);
-        context.$mol_state_local = $mol_state_local_mock;
-    });
-})($ || ($ = {}));
-//local.mock.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    const png = new Uint8Array([0x1a, 0x0a, 0x00, 0x49, 0x48, 0x78, 0xda]);
-    $.$mol_test({
-        'base64 decode string'() {
-            $.$mol_assert_like($.$mol_base64_decode('SGVsbG8sIM6nzqjOqdCr'), new TextEncoder().encode('Hello, ΧΨΩЫ'));
-        },
-        'base64 decode binary'() {
-            $.$mol_assert_like($.$mol_base64_decode('GgoASUh42g=='), png);
-        },
-    });
-})($ || ($ = {}));
-//decode.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    const png = new Uint8Array([0x1a, 0x0a, 0x00, 0x49, 0x48, 0x78, 0xda]);
-    $.$mol_test({
-        'base64 encode string'() {
-            $.$mol_assert_equal($.$mol_base64_encode('Hello, ΧΨΩЫ'), 'SGVsbG8sIM6nzqjOqdCr');
-        },
-        'base64 encode binary'() {
-            $.$mol_assert_equal($.$mol_base64_encode(png), 'GgoASUh42g==');
-        },
-    });
-})($ || ($ = {}));
-//encode.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'buffer from utf8 string'() {
-            const str = 'Hello, ΧΨΩЫ';
-            const buffer = $.$mol_buffer.from(str);
-            $.$mol_assert_equal(buffer.toString(), str);
-        },
-        'buffer length equals binary string length'() {
-            const str = 'Hello, ΧΨΩЫ';
-            const buffer = $.$mol_buffer.from(str);
-            $.$mol_assert_equal(buffer.length, 15);
-        },
-        'buffer base64 encode'() {
-            const str = 'Hello, ΧΨΩЫ';
-            const buffer = $.$mol_buffer.from(str);
-            $.$mol_assert_equal(buffer.toString('base64'), 'SGVsbG8sIM6nzqjOqdCr');
-        },
-        'buffer base64 decode'() {
-            const str = 'GgoASUh42g==';
-            const buffer = $.$mol_buffer.from(str, 'base64');
-            $.$mol_assert_like(buffer.native, new Uint8Array([26, 10, 0, 73, 72, 120, 218]));
-        },
-        'buffer conform from same string are equal'() {
-            const source = $.$mol_buffer.from('123');
-            const target = $.$mol_buffer.from('123');
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, source);
-        },
-        'buffer conform from different string are not equal'() {
-            const source = $.$mol_buffer.from('123');
-            const target = $.$mol_buffer.from('1234');
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_ok(result !== source);
-        },
-        'buffer conform from same Uint8Array are equal'() {
-            const source = $.$mol_buffer.from(new Uint8Array([12, 13, 5]));
-            const target = $.$mol_buffer.from(new Uint8Array([12, 13, 5]));
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_equal(result, source);
-        },
-        'buffer conform from different Uint8Array are not equal'() {
-            const source = $.$mol_buffer.from(new Uint8Array([12, 13]));
-            const target = $.$mol_buffer.from(new Uint8Array([12, 13, 5]));
-            const result = $.$mol_conform(target, source);
-            $.$mol_assert_ok(result !== source);
-        },
-    });
-})($ || ($ = {}));
-//buffer.test.js.map
-;
-"use strict";
 //equals.js.map
 ;
 "use strict";
@@ -2296,7 +2283,7 @@ var $;
             super(message);
             this.errors = errors;
             if (errors.length) {
-                const stacks = [...errors.map(error => error.stack), this.stack];
+                const stacks = [...errors.map(error => error.message), this.stack];
                 const diff = $.$mol_diff_path(...stacks.map(stack => {
                     if (!stack)
                         return [];

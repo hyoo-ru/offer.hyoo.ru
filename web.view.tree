@@ -1,18 +1,12 @@
 $hyoo_offer $mol_book
 	attr *
 		mol_theme \$mol_theme_dark
-	Placeholder null
 	pages /
 		<= Main_page $mol_page
 			title \HyOO - приложения для бизнеса
-			minimal_width 400
+			minimal_width 300
 			body /
 				<= Menu $mol_list rows /
-					<= About_link $mol_link
-						arg *
-							! \
-							business \about
-						title <= about_title @ \About
 					<= Corporate_link $mol_link
 						arg *
 							! \
@@ -27,15 +21,10 @@ $hyoo_offer $mol_book
 						arg *
 							! \
 							business \dev
-						title <= dev_title @ \Developers
-			foot / 
-				<= Github_link $mol_link_iconed
-					uri \https://github.com/eigenmethod/mol			
+						title <= dev_title @ \Developers	
 		<= About_page $hyoo_offer_about
-			title <= about_title
+			title <= about_title @ \About
 			minimal_width 600
-			event_top?val <=> event_front_up?val
-			tools / <= Details_close
 		<= Corporate_page $hyoo_offer_corporate
 			title <= corporate_title
 			minimal_width 600
@@ -56,10 +45,40 @@ $hyoo_offer $mol_book
 		sub / <= Details_close_icon $mol_icon_cross
 			
 
+$hyoo_offer_about $mol_view
+	sub /
+		<= Logo $hyoo_offer_about_placeholder
+			image \hyoo/offer/about/guild.svg
+			title <= guild @ \
+				\Responsible 
+				\Developers
+		<= Advantages $mol_view
+			sub /
+				<= Technology $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/technology.svg
+					title <= technology @ \Flexible adaptive interface
+				<= Code $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/code_rate.svg
+					title <= code_rate @ \Quick and easy development
+				<= Programming $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/programming.svg
+					title <= programming @ \High-speed applications
+$hyoo_offer_about_placeholder $mol_view
+	sub /
+		<= Image $mol_image
+			uri <= image \
+		<= title \
+
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+
 $mol_page $mol_view
 	sub /
 		<= Head $mol_view
-			attr * mol_theme \$mol_theme_base
 			sub <= head /
 				<= Title $mol_button
 					sub /
@@ -71,7 +90,6 @@ $mol_page $mol_view
 			scroll_top?val <=> body_scroll_top?val 0
 			sub <= body /$mol_view_content
 		<= Foot $mol_view
-			attr * mol_theme \$mol_theme_base
 			sub <= foot /$mol_view
 
 $mol_button $mol_view
@@ -260,6 +278,14 @@ $mol_check_expand $mol_check
 	checked?val <=> expanded?val false
 	enabled <= expandable false
 
+$mol_icon $mol_svg_root
+	view_box \0 0 24 24
+	minimal_width 16
+	minimal_height 16
+	sub /
+		<= Path $mol_svg_path
+			geometry <= path \
+
 $mol_svg $mol_view
 	dom_name \svg
 	dom_name_space \http://www.w3.org/2000/svg
@@ -280,19 +306,6 @@ $mol_svg_path $mol_svg
 		^
 		d <= geometry \
 
-
-$mol_icon $mol_svg_root
-	view_box \0 0 24 24
-	minimal_width 16
-	minimal_height 16
-	sub /
-		<= Path $mol_svg_path
-			geometry <= path \
-
-$mol_icon_tick $mol_icon path \M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z
-
-$mol_check_box $mol_check
-	Icon $mol_icon_tick
 
 $mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
 
@@ -324,24 +337,22 @@ $mol_link $mol_view
 		^
 		click?event <=> click?event <=> event_click?event null
 
-$hyoo_offer_corporate $mol_page
+$hyoo_offer_dev $mol_page
 	body /
 		<= Text $mol_text
 			text <= text \
-				\# Преимущества
+				\# Есть руки, нужны заказы?
 				\
-				\- **Быстрая** разработка и внедрение (Continuous Delivery).
-				\- Синхронные релизы под **все платформы** (веб, десктоп, планшет, смартфон).
-				\- Единый **брендированный дизайн** и пользовательский опыт ваших приложений на всех платформах и размерах экрана.
-				\- Формирование требований и написание технического задания **всего за 50 000 ₽**.
+				\- Мы **поделимся** с вами заказами. Сначала небольшими, потом крупными.
+				\- Мы **научим** вас нашим технологиям быстрой и качественной разработки.
+				\- Мы дадим вам **чёткие требования** в виде приёмочных тестов.
 				\
-				\# Кейсы
+				\# Есть заказы, нужны руки?
 				\
-				\- Корпоративный портал с лентой новостей, каталогом документов, каталогом сотрудников, менеджером задач, опросником и прочими мини приложениями
-				\- Серия приложений для разных типов клиентов и сотрудников банка (частные лица, юридические лица, менеджеры)
-				\- Приложения управления товаром (приём товара, списание, подтверждение контролёром, аналитика для руководства)
+				\- Мы возьмём на себя излишек заказов, поделившись прибылью.
+				\- Мы поможем оптимизировать ваши процессы и технологии разработки.
 				\
-				\# [Назначить деловую встречу](mailto:order-corporate@hyoo.ru)
+				\# [Стать партнёром](mailto:offer-dev@hyoo.ru)
 				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
 
 $hyoo_offer_private $mol_page
@@ -363,53 +374,24 @@ $hyoo_offer_private $mol_page
 				\# [Запросить оценку своего кейса](mailto:order-private@hyoo.ru)
 				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
 
-$mol_image $mol_view
-	dom_name \img
-	field *
-		^
-		src <= uri \
-		alt <= title
-
-$hyoo_offer_about $mol_page
-	body /
-		<= Logo $hyoo_offer_about_placeholder
-			image \hyoo/offer/about/guild.svg
-			title <= guild @ \
-				\Responsible 
-				\Developers
-		<= Advantages $mol_view
-			sub /
-				<= Technology $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/technology.svg
-					title <= technology @ \Flexible adaptive interface
-				<= Code $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/code_rate.svg
-					title <= code_rate @ \Quick and easy development
-				<= Programming $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/programming.svg
-					title <= programming @ \High-speed applications
-$hyoo_offer_about_placeholder $mol_view
-	sub /
-		<= Image $mol_image
-			uri <= image \
-		<= title \
-
-$hyoo_offer_dev $mol_page
+$hyoo_offer_corporate $mol_page
 	body /
 		<= Text $mol_text
 			text <= text \
-				\# Есть руки, нужны заказы?
+				\# Преимущества
 				\
-				\- Мы **поделимся** с вами заказами. Сначала небольшими, потом крупными.
-				\- Мы **научим** вас нашим технологиям быстрой и качественной разработки.
-				\- Мы дадим вам **чёткие требования** в виде приёмочных тестов.
+				\- **Быстрая** разработка и внедрение (Continuous Delivery).
+				\- Синхронные релизы под **все платформы** (веб, десктоп, планшет, смартфон).
+				\- Единый **брендированный дизайн** и пользовательский опыт ваших приложений на всех платформах и размерах экрана.
+				\- Формирование требований и написание технического задания **всего за 50 000 ₽**.
 				\
-				\# Есть заказы, нужны руки?
+				\# Кейсы
 				\
-				\- Мы возьмём на себя излишек заказов, поделившись прибылью.
-				\- Мы поможем оптимизировать ваши процессы и технологии разработки.
+				\- Корпоративный портал с лентой новостей, каталогом документов, каталогом сотрудников, менеджером задач, опросником и прочими мини приложениями
+				\- Серия приложений для разных типов клиентов и сотрудников банка (частные лица, юридические лица, менеджеры)
+				\- Приложения управления товаром (приём товара, списание, подтверждение контролёром, аналитика для руководства)
 				\
-				\# [Стать партнёром](mailto:offer-dev@hyoo.ru)
+				\# [Назначить деловую встречу](mailto:order-corporate@hyoo.ru)
 				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
 
 $mol_book $mol_view
@@ -505,14 +487,5 @@ $mol_touch $mol_plugin
 
 $mol_ghost $mol_view
 	Sub $mol_view
-
-$mol_link_iconed $mol_link
-	sub /
-		<= Icon $mol_image
-			uri <= icon \
-			title \
-	content /
-		<= title <= uri
-	host \
 
 $mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
