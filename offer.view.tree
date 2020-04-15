@@ -26,7 +26,6 @@ $hyoo_offer $mol_book
 			title <= about_title @ \About
 			minimal_width 600
 			event_top?val <=> event_front_up?val
-			tools / <= Details_close
 		<= Corporate_page $hyoo_offer_corporate
 			title <= corporate_title
 			minimal_width 600
