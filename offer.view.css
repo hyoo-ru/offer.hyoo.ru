@@ -1,24 +1,24 @@
 [hyoo_offer_main_page] {
-	flex: 1 1 300px;
+	flex: 0 0 20rem;
 }
 
 [hyoo_offer_about_page] {
-	flex: 1 10 600px;
+	flex: 0 0 60rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
 }
 
 [hyoo_offer_dev_page] {
-	flex: 1 10 600px;
+	flex: 0 0 60rem;
 }
 
 [hyoo_offer_private_page]{
-	flex: 1 10 600px;
+	flex: 0 0 60rem;
 }
 
 [hyoo_offer_corporate_page]{
-	flex: 1 10 600px;
+	flex: 0 0 60rem;
 }
 
 [hyoo_offer_menu] {
