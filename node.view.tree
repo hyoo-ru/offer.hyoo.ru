@@ -1,96 +1,97 @@
-$hyoo_offer $mol_book
-	attr *
-		mol_theme \$mol_theme_dark
-	pages /
-		<= Main_page $mol_page
-			title \HyOO - приложения для бизнеса
-			minimal_width 300
-			body /
-				<= Menu $mol_list rows /
-					<= Corporate_link $mol_link
-						arg *
-							! \
-							business \corporate
-						title <= corporate_title @ \Corporative clients
-					<= Private_link $mol_link
-						arg *
-							! \
-							business \private
-						title <= private_title @ \Private business
-					<= Dev_link $mol_link
-						arg *
-							! \
-							business \dev
-						title <= dev_title @ \Developers	
-		<= About_page $hyoo_offer_about
-			title <= about_title @ \About
-			minimal_width 600
-		<= Corporate_page $hyoo_offer_corporate
-			title <= corporate_title
-			minimal_width 600
-			event_top?val <=> event_front_up?val
-			tools / <= Details_close
-		<= Private_page $hyoo_offer_private
-			title <= private_title
-			minimal_width 600
-			event_top?val <=> event_front_up?val
-			tools / <= Details_close
-		<= Dev_page $hyoo_offer_dev
-			title <= dev_title
-			minimal_width 600
-			event_top?val <=> event_front_up?val
-			tools / <= Details_close
-	Details_close $mol_link
-		arg * business null
-		sub / <= Details_close_icon $mol_icon_cross
-			
+$mol_meter $mol_plugin
+	zoom 1
+	-
+	width?val 0
+	height?val 0
+	-
+	left?val 0
+	right?val 0
+	bottom?val 0
+	top?val 0
 
-$hyoo_offer_about $mol_view
-	sub /
-		<= Logo $hyoo_offer_about_placeholder
-			image \hyoo/offer/about/guild.svg
-			title <= guild @ \
-				\Responsible 
-				\Developers
-		<= Advantages $mol_view
-			sub /
-				<= Technology $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/technology.svg
-					title <= technology @ \Flexible adaptive interface
-				<= Code $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/code_rate.svg
-					title <= code_rate @ \Quick and easy development
-				<= Programming $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/programming.svg
-					title <= programming @ \High-speed applications
-$hyoo_offer_about_placeholder $mol_view
-	sub /
-		<= Image $mol_image
-			uri <= image \
-		<= title \
-
-$mol_image $mol_view
-	dom_name \img
-	field *
+$mol_touch $mol_plugin
+	start_zoom?val 0
+	start_distance?val 0
+	zoom?val 1
+	-
+	start_pan?val /
+		0
+		0
+	pan?val /
+		0
+		0
+	pos?val /
+		NaN
+		NaN
+	-
+	start_pos?val null
+	swipe_precision 16
+	-
+	swipe_right?val null
+	swipe_bottom?val null
+	swipe_left?val null
+	swipe_top?val null
+	-
+	swipe_from_right?val null
+	swipe_from_bottom?val null
+	swipe_from_left?val null
+	swipe_from_top?val null
+	-
+	swipe_to_right?val null
+	swipe_to_bottom?val null
+	swipe_to_left?val null
+	swipe_to_top?val null
+	-
+	style *
 		^
-		src <= uri \
-		alt <= title
+		touch-action \none
+		overscroll-behavior \none
+	-
+	event *
+		^
+		touchstart?event <=> event_start?event null
+		touchmove?event <=> event_move?event null
+		touchend?event <=> event_end?event null
+		mousedown?event <=> event_start?event null
+		mousemove?event <=> event_move?event null
+		mouseup?event <=> event_end?event null
+		mouseleave?event <=> event_leave?event null
+		wheel?event <=> event_wheel?event null
 
-$mol_page $mol_view
-	sub /
-		<= Head $mol_view
-			sub <= head /
-				<= Title $mol_button
-					sub /
-						<= title
-					event_click?val <=> event_top?val null
-				<= Tools $mol_view
-					sub <= tools /$mol_view_content
-		<= Body $mol_scroll
-			scroll_top?val <=> body_scroll_top?val 0
-			sub <= body /$mol_view_content
-		<= Foot $mol_view
-			sub <= foot /$mol_view
+$mol_ghost $mol_view
+	Sub $mol_view
+
+$mol_book $mol_view
+	sub <= pages_wrapped /$mol_view
+	minimal_width 0
+	pages /$mol_view
+	plugins /$mol_plugin
+		<= Meter $mol_meter
+			width => width
+		<= Touch $mol_touch
+			swipe_from_left?val <=> event_front_up?val null
+			swipe_to_left?val <=> event_front_down?val null
+	Page!index $mol_book_page
+		Sub <= page!index null
+		visible <= page_visible!index true
+	Placeholder $mol_book_placeholder
+		title <= title
+
+$mol_book_placeholder $mol_view
+	minimal_width 400
+	attr *
+		^
+		tabindex null
+
+$mol_book_page $mol_ghost
+	attr_static *
+		^
+		tabindex 0
+		mol_book_page_visible true
+	attr *
+		^
+		mol_book_page_focused <= focused
+		mol_book_page_visible <= visible true
 
 $mol_button $mol_view
 	enabled true
@@ -110,15 +111,6 @@ $mol_button $mol_view
 	sub /$mol_view_content
 		<= title
 
-$mol_button_typed $mol_button
-
-$mol_button_major $mol_button_typed
-	attr *
-		^
-		mol_theme \$mol_theme_accent
-
-$mol_button_minor $mol_button_typed
-
 $mol_scroll $mol_view
 	minimal_height 0
 	_event_scroll_timer?val null
@@ -130,66 +122,21 @@ $mol_scroll $mol_view
 		^
 		scroll?event <=> event_scroll?event null
 
-$mol_text $mol_list
-	uri_base \
-	text \
-	tokens /$mol_syntax_token
-	Quote!id $mol_text
-		text <= quote_text!id \
-	Row!id $mol_text_row
-		sub <= block_content!id /
-		type <= block_type!id \
-	Span!id $mol_text_span
-	Link!id $mol_text_link
-	Image!id $mol_text_image
-	Header!id $mol_text_header
-		level <= header_level!id 0
-		content <= header_content!id /
-	Table!id $mol_grid
-		head_cells <= table_head_cells!id /
-		rows <= table_rows!id /
-	Table_row!id $mol_grid_row
-		cells <= table_cells!id /
-	Table_cell!id $mol_grid_cell
-		sub <= table_cell_content!id /
-	Table_cell_head!id $mol_float
-		sub <= table_cell_content!id /
-
-$mol_text_row $mol_paragraph
-	attr *
-		^
-		mol_text_type <= type \
-
-$mol_text_header $mol_paragraph
-	dom_name \h
-	attr *
-		^
-		mol_text_header_level <= level?val 0
-	sub <= content /
-
-$mol_text_span $mol_paragraph
-	dom_name \span
-	attr *
-		^
-		mol_text_type <= type?val \
-	sub <= content?val /
-
-$mol_text_link $mol_link
-	attr *
-		^
-		mol_text_type <= type?val \
-	uri <= link?val \
-	sub <= content?val /
-
-$mol_text_image $mol_view
-	dom_name \object
-	attr *
-		^
-		allowfullscreen true
-		mol_text_type <= type?val \
-		data <= link?val \
+$mol_page $mol_view
 	sub /
-		<= title?val \
+		<= Head $mol_view
+			sub <= head /
+				<= Title $mol_button
+					sub /
+						<= title
+					event_click?val <=> event_top?val null
+				<= Tools $mol_view
+					sub <= tools /$mol_view_content
+		<= Body $mol_scroll
+			scroll_top?val <=> body_scroll_top?val 0
+			sub <= body /$mol_view_content
+		<= Foot $mol_view
+			sub <= foot /$mol_view
 
 $mol_list $mol_view
 	render_visible_only true
@@ -201,6 +148,90 @@ $mol_list $mol_view
 	view_window /
 		0
 		0
+
+$mol_link $mol_view
+	dom_name \a
+	attr *
+		^
+		href <= uri \
+		title <= hint \
+		target <= target \_self
+		download <= file_name \
+		mol_link_current <= current false
+	sub /$mol_view_content
+		<= title
+	arg *
+	event *
+		^
+		click?event <=> click?event <=> event_click?event null
+
+$mol_float $mol_view
+
+$mol_button_typed $mol_button
+
+$mol_button_minor $mol_button_typed
+
+$mol_check $mol_button_minor
+	attr *
+		^
+		mol_check_checked <= checked?val false
+		aria-checked <= checked?val false
+		role \checkbox
+	sub /
+		<= Icon null
+		<= label /
+			<= Title $mol_view
+				sub /
+					<= title \
+
+$mol_svg $mol_view
+	dom_name \svg
+	dom_name_space \http://www.w3.org/2000/svg
+	text_width?text 0
+	font_size 16
+	font_family \
+
+$mol_svg_root $mol_svg
+	dom_name \svg
+	attr *
+		^
+		viewBox <= view_box \0 0 100 100
+		preserveAspectRatio <= aspect \xMidYMid
+
+$mol_svg_path $mol_svg
+	dom_name \path
+	attr *
+		^
+		d <= geometry \
+
+
+$mol_icon $mol_svg_root
+	view_box \0 0 24 24
+	minimal_width 16
+	minimal_height 16
+	sub /
+		<= Path $mol_svg_path
+			geometry <= path \
+
+$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
+
+$mol_check_expand $mol_check
+	minimal_height 40
+	Icon $mol_icon_chevron
+	level 0
+	style *
+		^
+		paddingLeft <= level_style \0px
+	checked?val <=> expanded?val false
+	enabled <= expandable false
+
+$mol_dimmer $mol_view
+	haystack \
+	needle \
+	sub <= parts /$mol_view_content
+	Low!id $mol_view
+		sub /
+			<= string!id \
 
 $mol_grid $mol_scroll
 	row_height 40
@@ -253,126 +284,86 @@ $mol_grid_cell $mol_view
 
 $mol_grid_number $mol_grid_cell
 
-$mol_float $mol_view
-
-$mol_check $mol_button_minor
-	attr *
-		^
-		mol_check_checked <= checked?val false
-		aria-checked <= checked?val false
-		role \checkbox
-	sub /
-		<= Icon null
-		<= label /
-			<= Title $mol_view
-				sub /
-					<= title \
-
-$mol_check_expand $mol_check
-	minimal_height 40
-	Icon $mol_icon_chevron
-	level 0
-	style *
-		^
-		paddingLeft <= level_style \0px
-	checked?val <=> expanded?val false
-	enabled <= expandable false
-
-$mol_icon $mol_svg_root
-	view_box \0 0 24 24
-	minimal_width 16
-	minimal_height 16
-	sub /
-		<= Path $mol_svg_path
-			geometry <= path \
-
-$mol_svg $mol_view
-	dom_name \svg
-	dom_name_space \http://www.w3.org/2000/svg
-	text_width?text 0
-	font_size 16
-	font_family \
-
-$mol_svg_root $mol_svg
-	dom_name \svg
-	attr *
-		^
-		viewBox <= view_box \0 0 100 100
-		preserveAspectRatio <= aspect \xMidYMid
-
-$mol_svg_path $mol_svg
-	dom_name \path
-	attr *
-		^
-		d <= geometry \
-
-
-$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
-
-$mol_dimmer $mol_view
-	haystack \
-	needle \
-	sub <= parts /$mol_view_content
-	Low!id $mol_view
-		sub /
-			<= string!id \
-
 $mol_paragraph $mol_view
 	line_height 24
 	letter_width 8
 
-$mol_link $mol_view
-	dom_name \a
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+
+$mol_link_iconed $mol_link
+	sub /
+		<= Icon $mol_image
+			uri <= icon \
+			title \
+	content /
+		<= title <= uri
+	host \
+
+$mol_text $mol_list
+	uri_base \
+	text \
+	tokens /
+	Quote!id $mol_text
+		text <= quote_text!id \
+	Row!id $mol_text_row
+		sub <= block_content!id /
+		type <= block_type!id \
+	Span!id $mol_text_span
+	Link!id $mol_text_link
+	Image!id $mol_text_image
+	Header!id $mol_text_header
+		level <= header_level!id 0
+		content <= header_content!id /
+	Table!id $mol_grid
+		head_cells <= table_head_cells!id /
+		rows <= table_rows!id /
+	Table_row!id $mol_grid_row
+		cells <= table_cells!id /
+	Table_cell!id $mol_grid_cell
+		sub <= table_cell_content!id /
+	Table_cell_head!id $mol_float
+		sub <= table_cell_content!id /
+
+$mol_text_row $mol_paragraph
 	attr *
 		^
-		href <= uri \
-		title <= hint \
-		target <= target \_self
-		download <= file_name \
-		mol_link_current <= current false
-	sub /$mol_view_content
-		<= title
-	arg *
-	event *
+		mol_text_type <= type \
+
+$mol_text_header $mol_paragraph
+	dom_name \h
+	attr *
 		^
-		click?event <=> click?event <=> event_click?event null
+		mol_text_header_level <= level?val 0
+	sub <= content /
 
-$hyoo_offer_dev $mol_page
-	body /
-		<= Text $mol_text
-			text <= text \
-				\# Есть руки, нужны заказы?
-				\
-				\- Мы **поделимся** с вами заказами. Сначала небольшими, потом крупными.
-				\- Мы **научим** вас нашим технологиям быстрой и качественной разработки.
-				\- Мы дадим вам **чёткие требования** в виде приёмочных тестов.
-				\
-				\# Есть заказы, нужны руки?
-				\
-				\- Мы возьмём на себя излишек заказов, поделившись прибылью.
-				\- Мы поможем оптимизировать ваши процессы и технологии разработки.
-				\
-				\# [Стать партнёром](mailto:offer-dev@hyoo.ru)
-				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
+$mol_text_span $mol_paragraph
+	dom_name \span
+	attr *
+		^
+		mol_text_type <= type?val \
+	sub <= content?val /
 
-$hyoo_offer_private $mol_page
-	body /
-		<= Text $mol_text
-			text <= text \
-				\# Преимущества
-				\
-				\- Приложения заточенные именно **под ваш бизнесс**.
-				\- Приложение под ключ **от 50 000 ₽**.
-				\- Одно приложение сразу под **все платформы** (Progressive Web Apps).
-				\
-				\# Кейсы
-				\
-				\- Информационное сопровождение мероприятий: контакты участников, карта, расписание, геймификация
-				\- Цифровой помощник в ресторане: вызов оффицианта, акции, каталог блюд и немедленный их заказ, немедленная оплата с привязанной карты
-				\- Учёт достижений группового движения к целям: приход, расход, burn down chart
-				\
-				\# [Запросить оценку своего кейса](mailto:order-private@hyoo.ru)
-				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
+$mol_text_link $mol_link_iconed
+	attr *
+		^
+		mol_text_type <= type?val \
+	uri <= link?val \
+	content <= content?val /
+
+$mol_text_image $mol_view
+	dom_name \object
+	attr *
+		^
+		allowfullscreen true
+		mol_text_type <= type?val \
+		data <= link?val \
+	sub /
+		<= title?val \
 
 $hyoo_offer_corporate $mol_page
 	body /
@@ -394,98 +385,112 @@ $hyoo_offer_corporate $mol_page
 				\# [Назначить деловую встречу](mailto:order-corporate@hyoo.ru)
 				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
 
-$mol_book $mol_view
-	sub <= pages_wrapped /$mol_view
-	minimal_width 0
-	pages /$mol_view
-	plugins /$mol_plugin
-		<= Meter $mol_meter
-			width => width
-		<= Touch $mol_touch
-			swipe_from_left?val <=> event_front_up?val null
-			swipe_to_left?val <=> event_front_down?val null
-	Page!index $mol_book_page
-		Sub <= page!index null
-		visible <= page_visible!index true
-	Placeholder $mol_book_placeholder
-		title <= title
+$hyoo_offer_private $mol_page
+	body /
+		<= Text $mol_text
+			text <= text \
+				\# Преимущества
+				\
+				\- Приложения заточенные именно **под ваш бизнесс**.
+				\- Приложение под ключ **от 50 000 ₽**.
+				\- Одно приложение сразу под **все платформы** (Progressive Web Apps).
+				\
+				\# Кейсы
+				\
+				\- Информационное сопровождение мероприятий: контакты участников, карта, расписание, геймификация
+				\- Цифровой помощник в ресторане: вызов оффицианта, акции, каталог блюд и немедленный их заказ, немедленная оплата с привязанной карты
+				\- Учёт достижений группового движения к целям: приход, расход, burn down chart
+				\
+				\# [Запросить оценку своего кейса](mailto:order-private@hyoo.ru)
+				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
 
-$mol_book_placeholder $mol_view
-	minimal_width 400
-	attr *
-		^
-		tabindex null
+$hyoo_offer_dev $mol_page
+	body /
+		<= Text $mol_text
+			text <= text \
+				\# Есть руки, нужны заказы?
+				\
+				\- Мы **поделимся** с вами заказами. Сначала небольшими, потом крупными.
+				\- Мы **научим** вас нашим технологиям быстрой и качественной разработки.
+				\- Мы дадим вам **чёткие требования** в виде приёмочных тестов.
+				\
+				\# Есть заказы, нужны руки?
+				\
+				\- Мы возьмём на себя излишек заказов, поделившись прибылью.
+				\- Мы поможем оптимизировать ваши процессы и технологии разработки.
+				\
+				\# [Стать партнёром](mailto:offer-dev@hyoo.ru)
+				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
 
-$mol_book_page $mol_ghost
-	attr_static *
-		^
-		tabindex 0
-		mol_book_page_visible true
-	attr *
-		^
-		mol_book_page_focused <= focused
-		mol_book_page_visible <= visible true
-
-$mol_meter $mol_plugin
-	zoom 1
-	-
-	width?val 0
-	height?val 0
-	-
-	left?val 0
-	right?val 0
-	bottom?val 0
-	top?val 0
-
-$mol_touch $mol_plugin
-	start_zoom?val 0
-	start_distance?val 0
-	zoom?val 1
-	-
-	start_pan?val /
-		0
-		0
-	pan?val /
-		0
-		0
-	pos?val /
-		NaN
-		NaN
-	-
-	start_pos?val null
-	swipe_precision 16
-	-
-	swipe_right?val null
-	swipe_bottom?val null
-	swipe_left?val null
-	swipe_top?val null
-	-
-	swipe_from_right?val null
-	swipe_from_bottom?val null
-	swipe_from_left?val null
-	swipe_from_top?val null
-	-
-	swipe_to_right?val null
-	swipe_to_bottom?val null
-	swipe_to_left?val null
-	swipe_to_top?val null
-	-
-	style *
-		^
-		touch-action \none
-	-
-	event *
-		^
-		touchstart?event <=> event_start?event null
-		touchmove?event <=> event_move?event null
-		touchend?event <=> event_end?event null
-		mousedown?event <=> event_start?event null
-		mousemove?event <=> event_move?event null
-		mouseup?event <=> event_end?event null
-		mouseleave?event <=> event_leave?event null
-		wheel?event <=> event_wheel?event null
-
-$mol_ghost $mol_view
-	Sub $mol_view
+$hyoo_offer_about $mol_view
+	sub /
+		<= Logo $hyoo_offer_about_placeholder
+			image \hyoo/offer/about/guild.svg
+			title <= guild @ \
+				\Responsible 
+				\Developers
+		<= Advantages $mol_view
+			sub /
+				<= Technology $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/technology.svg
+					title <= technology @ \Flexible adaptive interface
+				<= Code $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/code_rate.svg
+					title <= code_rate @ \Quick and easy development
+				<= Programming $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/programming.svg
+					title <= programming @ \High-speed applications
+$hyoo_offer_about_placeholder $mol_view
+	sub /
+		<= Image $mol_image
+			uri <= image \
+		<= title \
 
 $mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
+
+$hyoo_offer $mol_book
+	attr *
+		mol_theme \$mol_theme_dark
+	pages /
+		<= Main_page $mol_page
+			title \HyOO - приложения для бизнеса
+			minimal_width 300
+			body /
+				<= Menu $mol_list rows /
+					<= Corporate_link $mol_link
+						arg *
+							! \
+							business \corporate
+						title <= corporate_title @ \Corporative clients
+					<= Private_link $mol_link
+						arg *
+							! \
+							business \private
+						title <= private_title @ \Private business
+					<= Dev_link $mol_link
+						arg *
+							! \
+							business \dev
+						title <= dev_title @ \Developers	
+		<= About_page $hyoo_offer_about
+			title <= about_title @ \About
+			minimal_width 600
+		<= Corporate_page $hyoo_offer_corporate
+			title <= corporate_title
+			minimal_width 600
+			event_top?val <=> event_front_up?val
+			tools / <= Details_close
+		<= Private_page $hyoo_offer_private
+			title <= private_title
+			minimal_width 600
+			event_top?val <=> event_front_up?val
+			tools / <= Details_close
+		<= Dev_page $hyoo_offer_dev
+			title <= dev_title
+			minimal_width 600
+			event_top?val <=> event_front_up?val
+			tools / <= Details_close
+	Details_close $mol_link
+		arg * business null
+		sub / <= Details_close_icon $mol_icon_cross
+			

@@ -1,14 +1,5 @@
 function require( path ){ return $node[ path ] };
 "use strict";
-//assert.js.map
-;
-"use strict";
-//assert.test.js.map
-;
-"use strict";
-//writable.test.js.map
-;
-"use strict";
 var $;
 (function ($_1) {
     let $$;
@@ -33,7 +24,11 @@ var $;
                 await mock(context);
             await test(context);
         }
-        console.info('$mol_test completed', $_1.$mol_test_all.length);
+        $_1.$mol_ambient({}).$mol_log3_done({
+            place: '$mol_test',
+            message: 'Completed',
+            count: $_1.$mol_test_all.length,
+        });
     }
     $_1.$mol_test_run = $mol_test_run;
     let scheduled = false;
@@ -44,7 +39,7 @@ var $;
         setTimeout($_1.$mol_log_group('$mol_test', () => {
             scheduled = false;
             $mol_test_run();
-        }), 500);
+        }), 0);
     }
     $_1.$mol_test_schedule = $mol_test_schedule;
     $_1.$mol_test_mocks.push(context => {
@@ -89,10 +84,66 @@ var $;
 //test.test.js.map
 ;
 "use strict";
-//deep.js.map
+//assert.test.js.map
+;
+"use strict";
+//assert.js.map
+;
+"use strict";
+//writable.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_after_mock_queue = [];
+    function $mol_after_mock_warp() {
+        const queue = $.$mol_after_mock_queue.splice(0);
+        for (const task of queue)
+            task();
+    }
+    $.$mol_after_mock_warp = $mol_after_mock_warp;
+    class $mol_after_mock_commmon extends $.$mol_object2 {
+        constructor(task) {
+            super();
+            this.task = task;
+            this.promise = Promise.resolve();
+            this.cancelled = false;
+            $.$mol_after_mock_queue.push(task);
+        }
+        destructor() {
+            const index = $.$mol_after_mock_queue.indexOf(this.task);
+            if (index >= 0)
+                $.$mol_after_mock_queue.splice(index, 1);
+        }
+    }
+    $.$mol_after_mock_commmon = $mol_after_mock_commmon;
+    class $mol_after_mock_timeout extends $mol_after_mock_commmon {
+        constructor(delay, task) {
+            super(task);
+            this.delay = delay;
+        }
+    }
+    $.$mol_after_mock_timeout = $mol_after_mock_timeout;
+})($ || ($ = {}));
+//mock.test.js.map
+;
+"use strict";
+var $;
+(function ($_1) {
+    $_1.$mol_test_mocks.push($ => {
+        $.$mol_after_tick = $_1.$mol_after_mock_commmon;
+    });
+})($ || ($ = {}));
+//tick.test.js.map
 ;
 "use strict";
 //deep.test.js.map
+;
+"use strict";
+//deep.js.map
+;
+"use strict";
+//jsx d.js.map
 ;
 "use strict";
 var $;
@@ -107,7 +158,70 @@ var $;
 //jsx.js.map
 ;
 "use strict";
-//jsx d.js.map
+var $;
+(function ($) {
+    $.$mol_test({
+        'Make empty div'() {
+            $.$mol_assert_equal(($.$mol_jsx_make("div", null)).outerHTML, '<div></div>');
+        },
+        'Define native field'() {
+            const dom = $.$mol_jsx_make("input", { value: '123' });
+            $.$mol_assert_equal(dom.outerHTML, '<input value="123">');
+            $.$mol_assert_equal(dom.value, '123');
+        },
+        'Define classes'() {
+            const dom = $.$mol_jsx_make("div", { classList: ['foo bar'] });
+            $.$mol_assert_equal(dom.outerHTML, '<div class="foo bar"></div>');
+        },
+        'Define styles'() {
+            const dom = $.$mol_jsx_make("div", { style: { color: 'red' } });
+            $.$mol_assert_equal(dom.outerHTML, '<div style="color: red;"></div>');
+        },
+        'Define dataset'() {
+            const dom = $.$mol_jsx_make("div", { dataset: { foo: 'bar' } });
+            $.$mol_assert_equal(dom.outerHTML, '<div data-foo="bar"></div>');
+        },
+        'Define attributes'() {
+            const dom = $.$mol_jsx_make("div", { lang: "ru", hidden: true });
+            $.$mol_assert_equal(dom.outerHTML, '<div lang="ru" hidden=""></div>');
+        },
+        'Define child nodes'() {
+            const dom = $.$mol_jsx_make("div", null,
+                "hello",
+                $.$mol_jsx_make("strong", null, "world"),
+                "!");
+            $.$mol_assert_equal(dom.outerHTML, '<div>hello<strong>world</strong>!</div>');
+        },
+        'Function as component'() {
+            const Button = ({ hint }, target) => {
+                return $.$mol_jsx_make("button", { title: hint }, target());
+            };
+            const dom = $.$mol_jsx_make(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
+            $.$mol_assert_equal(dom.outerHTML, '<button title="click me" id="/foo">hey!</button>');
+        },
+        'Nested guid generation'() {
+            const Foo = () => {
+                return $.$mol_jsx_make("div", null,
+                    $.$mol_jsx_make(Bar, { id: "/bar" },
+                        $.$mol_jsx_make("img", { id: "/icon" })));
+            };
+            const Bar = (props, icon) => {
+                return $.$mol_jsx_make("span", null, icon);
+            };
+            const dom = $.$mol_jsx_make(Foo, { id: "/foo" });
+            $.$mol_assert_equal(dom.outerHTML, '<div id="/foo"><span id="/foo/bar"><img id="/foo/icon"></span></div>');
+        },
+        'Fail on non unique ids'() {
+            const App = () => {
+                return $.$mol_jsx_make("div", null,
+                    $.$mol_jsx_make("span", { id: "/bar" }),
+                    $.$mol_jsx_make("span", { id: "/bar" }));
+            };
+            $.$mol_assert_fail(() => $.$mol_jsx_make(App, { id: "/foo" }), 'JSX already has tag with id "/bar"');
+        },
+    });
+})($ || ($ = {}));
+//make.test.js.map
 ;
 "use strict";
 var $;
@@ -172,171 +286,6 @@ var $;
     $.$mol_jsx_make = $mol_jsx_make;
 })($ || ($ = {}));
 //make.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'Make empty div'() {
-            $.$mol_assert_equal(($.$mol_jsx_make("div", null)).outerHTML, '<div></div>');
-        },
-        'Define native field'() {
-            const dom = $.$mol_jsx_make("input", { value: '123' });
-            $.$mol_assert_equal(dom.outerHTML, '<input value="123">');
-            $.$mol_assert_equal(dom.value, '123');
-        },
-        'Define classes'() {
-            const dom = $.$mol_jsx_make("div", { classList: ['foo bar'] });
-            $.$mol_assert_equal(dom.outerHTML, '<div class="foo bar"></div>');
-        },
-        'Define styles'() {
-            const dom = $.$mol_jsx_make("div", { style: { color: 'red' } });
-            $.$mol_assert_equal(dom.outerHTML, '<div style="color: red;"></div>');
-        },
-        'Define dataset'() {
-            const dom = $.$mol_jsx_make("div", { dataset: { foo: 'bar' } });
-            $.$mol_assert_equal(dom.outerHTML, '<div data-foo="bar"></div>');
-        },
-        'Define attributes'() {
-            const dom = $.$mol_jsx_make("div", { hidden: true, lang: "ru" });
-            $.$mol_assert_equal(dom.outerHTML, '<div hidden="" lang="ru"></div>');
-        },
-        'Define child nodes'() {
-            const dom = $.$mol_jsx_make("div", null,
-                "hello",
-                $.$mol_jsx_make("strong", null, "world"),
-                "!");
-            $.$mol_assert_equal(dom.outerHTML, '<div>hello<strong>world</strong>!</div>');
-        },
-        'Function as component'() {
-            const Button = ({ hint }, target) => {
-                return $.$mol_jsx_make("button", { title: hint }, target());
-            };
-            const dom = $.$mol_jsx_make(Button, { id: "/foo", hint: "click me" }, () => 'hey!');
-            $.$mol_assert_equal(dom.outerHTML, '<button title="click me" id="/foo">hey!</button>');
-        },
-        'Nested guid generation'() {
-            const Foo = () => {
-                return $.$mol_jsx_make("div", null,
-                    $.$mol_jsx_make(Bar, { id: "/bar" },
-                        $.$mol_jsx_make("img", { id: "/icon" })));
-            };
-            const Bar = (props, icon) => {
-                return $.$mol_jsx_make("span", null, icon);
-            };
-            const dom = $.$mol_jsx_make(Foo, { id: "/foo" });
-            $.$mol_assert_equal(dom.outerHTML, '<div id="/foo"><span id="/foo/bar"><img id="/foo/icon"></span></div>');
-        },
-        'Fail on non unique ids'() {
-            const App = () => {
-                return $.$mol_jsx_make("div", null,
-                    $.$mol_jsx_make("span", { id: "/bar" }),
-                    $.$mol_jsx_make("span", { id: "/bar" }));
-            };
-            $.$mol_assert_fail(() => $.$mol_jsx_make(App, { id: "/foo" }), 'JSX already has tag with id "/bar"');
-        },
-    });
-})($ || ($ = {}));
-//make.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    const a_stack = [];
-    const b_stack = [];
-    let cache = null;
-    function $mol_compare_deep(a, b) {
-        if (Object.is(a, b))
-            return true;
-        const a_type = typeof a;
-        const b_type = typeof b;
-        if (a_type !== b_type)
-            return false;
-        if (a_type === 'function')
-            return String(a) === String(b);
-        if (a_type !== 'object')
-            return false;
-        if (!a || !b)
-            return false;
-        if (a instanceof Error)
-            return false;
-        if (a['constructor'] !== b['constructor'])
-            return false;
-        if (a instanceof RegExp)
-            return Object.is(String(a), String(b));
-        const ref = a_stack.indexOf(a);
-        if (ref >= 0) {
-            return Object.is(b_stack[ref], b);
-        }
-        if (!cache)
-            cache = new WeakMap;
-        let a_cache = cache.get(a);
-        if (a_cache) {
-            const b_cache = a_cache.get(b);
-            if (typeof b_cache === 'boolean')
-                return b_cache;
-        }
-        else {
-            a_cache = new WeakMap();
-            cache.set(a, a_cache);
-        }
-        a_stack.push(a);
-        b_stack.push(b);
-        let result;
-        try {
-            if (a[Symbol.iterator]) {
-                const a_iter = a[Symbol.iterator]();
-                const b_iter = b[Symbol.iterator]();
-                while (true) {
-                    const a_next = a_iter.next();
-                    const b_next = b_iter.next();
-                    if (a_next.done !== a_next.done)
-                        return result = false;
-                    if (a_next.done)
-                        break;
-                    if (!$mol_compare_deep(a_next.value, b_next.value))
-                        return result = false;
-                }
-                return result = true;
-            }
-            let count = 0;
-            for (let key in a) {
-                try {
-                    if (!$mol_compare_deep(a[key], b[key]))
-                        return result = false;
-                }
-                catch (error) {
-                    $.$mol_fail_hidden(new $.$mol_error_mix(`Failed ${JSON.stringify(key)} fields comparison of ${a} and ${b}`, error));
-                }
-                ++count;
-            }
-            for (let key in b) {
-                --count;
-                if (count < 0)
-                    return result = false;
-            }
-            const a_val = a['valueOf']();
-            if (Object.is(a_val, a))
-                return result = true;
-            const b_val = b['valueOf']();
-            if (!Object.is(a_val, b_val))
-                return result = false;
-            return result = true;
-        }
-        finally {
-            a_stack.pop();
-            b_stack.pop();
-            if (a_stack.length === 0) {
-                cache = null;
-            }
-            else {
-                a_cache.set(b, result);
-            }
-        }
-    }
-    $.$mol_compare_deep = $mol_compare_deep;
-})($ || ($ = {}));
-//deep.js.map
 ;
 "use strict";
 var $;
@@ -463,6 +412,137 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    const a_stack = [];
+    const b_stack = [];
+    let cache = null;
+    function $mol_compare_deep(a, b) {
+        if (Object.is(a, b))
+            return true;
+        const a_type = typeof a;
+        const b_type = typeof b;
+        if (a_type !== b_type)
+            return false;
+        if (a_type === 'function')
+            return String(a) === String(b);
+        if (a_type !== 'object')
+            return false;
+        if (!a || !b)
+            return false;
+        if (a instanceof Error)
+            return false;
+        if (a['constructor'] !== b['constructor'])
+            return false;
+        if (a instanceof RegExp)
+            return Object.is(String(a), String(b));
+        const ref = a_stack.indexOf(a);
+        if (ref >= 0) {
+            return Object.is(b_stack[ref], b);
+        }
+        if (!cache)
+            cache = new WeakMap;
+        let a_cache = cache.get(a);
+        if (a_cache) {
+            const b_cache = a_cache.get(b);
+            if (typeof b_cache === 'boolean')
+                return b_cache;
+        }
+        else {
+            a_cache = new WeakMap();
+            cache.set(a, a_cache);
+        }
+        a_stack.push(a);
+        b_stack.push(b);
+        let result;
+        try {
+            if (a[Symbol.iterator]) {
+                const a_iter = a[Symbol.iterator]();
+                const b_iter = b[Symbol.iterator]();
+                while (true) {
+                    const a_next = a_iter.next();
+                    const b_next = b_iter.next();
+                    if (a_next.done !== a_next.done)
+                        return result = false;
+                    if (a_next.done)
+                        break;
+                    if (!$mol_compare_deep(a_next.value, b_next.value))
+                        return result = false;
+                }
+                return result = true;
+            }
+            let count = 0;
+            for (let key in a) {
+                try {
+                    if (!$mol_compare_deep(a[key], b[key]))
+                        return result = false;
+                }
+                catch (error) {
+                    $.$mol_fail_hidden(new $.$mol_error_mix(`Failed ${JSON.stringify(key)} fields comparison of ${a} and ${b}`, error));
+                }
+                ++count;
+            }
+            for (let key in b) {
+                --count;
+                if (count < 0)
+                    return result = false;
+            }
+            const a_val = a['valueOf']();
+            if (Object.is(a_val, a))
+                return result = true;
+            const b_val = b['valueOf']();
+            if (!Object.is(a_val, b_val))
+                return result = false;
+            return result = true;
+        }
+        finally {
+            a_stack.pop();
+            b_stack.pop();
+            if (a_stack.length === 0) {
+                cache = null;
+            }
+            else {
+                a_cache.set(b, result);
+            }
+        }
+    }
+    $.$mol_compare_deep = $mol_compare_deep;
+})($ || ($ = {}));
+//deep.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'must be false'() {
+            $.$mol_assert_not(0);
+        },
+        'must be true'() {
+            $.$mol_assert_ok(1);
+        },
+        'two must be equal'() {
+            $.$mol_assert_equal(2, 2);
+        },
+        'three must be equal'() {
+            $.$mol_assert_equal(2, 2, 2);
+        },
+        'two must be unique'() {
+            $.$mol_assert_unique([3], [3]);
+        },
+        'three must be unique'() {
+            $.$mol_assert_unique([3], [3], [3]);
+        },
+        'two must be alike'() {
+            $.$mol_assert_like([3], [3]);
+        },
+        'three must be alike'() {
+            $.$mol_assert_like([3], [3], [3]);
+        },
+    });
+})($ || ($ = {}));
+//assert.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_assert_ok(value) {
         if (value)
             return;
@@ -538,7 +618,7 @@ var $;
                         return val;
                     if ('outerHTML' in val)
                         return val.outerHTML;
-                    return val;
+                    return JSON.stringify(val);
                 };
                 return $.$mol_fail(new Error(`Not like\n${print(head)}\n---\n${print(value)}`));
             }
@@ -547,38 +627,6 @@ var $;
     $.$mol_assert_like = $mol_assert_like;
 })($ || ($ = {}));
 //assert.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'must be false'() {
-            $.$mol_assert_not(0);
-        },
-        'must be true'() {
-            $.$mol_assert_ok(1);
-        },
-        'two must be equal'() {
-            $.$mol_assert_equal(2, 2);
-        },
-        'three must be equal'() {
-            $.$mol_assert_equal(2, 2, 2);
-        },
-        'two must be unique'() {
-            $.$mol_assert_unique([3], [3]);
-        },
-        'three must be unique'() {
-            $.$mol_assert_unique([3], [3], [3]);
-        },
-        'two must be alike'() {
-            $.$mol_assert_like([3], [3]);
-        },
-        'three must be alike'() {
-            $.$mol_assert_like([3], [3], [3]);
-        },
-    });
-})($ || ($ = {}));
-//assert.test.js.map
 ;
 "use strict";
 var $;
@@ -598,6 +646,20 @@ var $;
     });
 })($ || ($ = {}));
 //object.test.js.map
+;
+"use strict";
+var $;
+(function ($_1) {
+    $_1.$mol_test_mocks.push($ => {
+        $.$mol_log3_come = () => { };
+        $.$mol_log3_done = () => { };
+        $.$mol_log3_fail = () => { };
+        $.$mol_log3_warn = () => { };
+        $.$mol_log3_rise = () => { };
+        $.$mol_log3_area = () => () => { };
+    });
+})($ || ($ = {}));
+//log3.test.js.map
 ;
 "use strict";
 var $;
@@ -630,23 +692,29 @@ var $;
             $.$mol_assert_equal(obj.pow(2), 5);
         },
         'decorate field getter'() {
-            class Plus1 extends $.$mol_wrapper {
-                static wrap(task) {
-                    return function (...args) {
-                        return Plus1.last = (task.call(this, ...args) || 0) + 1;
-                    };
+            let Plus1 = (() => {
+                class Plus1 extends $.$mol_wrapper {
+                    static wrap(task) {
+                        return function (...args) {
+                            return Plus1.last = (task.call(this, ...args) || 0) + 1;
+                        };
+                    }
                 }
-            }
-            Plus1.last = 0;
-            class Foo {
-                static get two() {
-                    return 1;
+                Plus1.last = 0;
+                return Plus1;
+            })();
+            let Foo = (() => {
+                class Foo {
+                    static get two() {
+                        return 1;
+                    }
+                    static set two(next) { }
                 }
-                static set two(next) { }
-            }
-            __decorate([
-                Plus1.field
-            ], Foo, "two", null);
+                __decorate([
+                    Plus1.field
+                ], Foo, "two", null);
+                return Foo;
+            })();
             $.$mol_assert_equal(Foo.two, 2);
             Foo.two = 3;
             $.$mol_assert_equal(Plus1.last, 2);
@@ -660,17 +728,20 @@ var $;
                     };
                 }
             }
-            class Foo1 {
-                constructor() {
-                    this.level = 2;
+            let Foo1 = (() => {
+                class Foo1 {
+                    constructor() {
+                        this.level = 2;
+                    }
+                    pow(a) {
+                        return a ** this.level;
+                    }
                 }
-                pow(a) {
-                    return a ** this.level;
-                }
-            }
-            __decorate([
-                Plus1.method
-            ], Foo1.prototype, "pow", null);
+                __decorate([
+                    Plus1.method
+                ], Foo1.prototype, "pow", null);
+                return Foo1;
+            })();
             const Foo2 = Foo1;
             const foo = new Foo2;
             $.$mol_assert_equal(foo.pow(2), 5);
@@ -683,15 +754,18 @@ var $;
                     };
                 }
             }
-            class Foo {
-                static pow(a) {
-                    return a ** this.level;
+            let Foo = (() => {
+                class Foo {
+                    static pow(a) {
+                        return a ** this.level;
+                    }
                 }
-            }
-            Foo.level = 2;
-            __decorate([
-                Plus1.method
-            ], Foo, "pow", null);
+                Foo.level = 2;
+                __decorate([
+                    Plus1.method
+                ], Foo, "pow", null);
+                return Foo;
+            })();
             $.$mol_assert_equal(Foo.pow(2), 5);
         },
         'decorate class'() {
@@ -704,92 +778,22 @@ var $;
                     };
                 }
             }
-            let Foo = class Foo {
-                constructor(bar) {
-                    this.bar = bar;
-                }
-            };
-            Foo = __decorate([
-                BarInc.class
-            ], Foo);
+            let Foo = (() => {
+                let Foo = class Foo {
+                    constructor(bar) {
+                        this.bar = bar;
+                    }
+                };
+                Foo = __decorate([
+                    BarInc.class
+                ], Foo);
+                return Foo;
+            })();
             $.$mol_assert_equal(new Foo(2).bar, 3);
         },
     });
 })($ || ($ = {}));
 //wrapper.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'all cases of using maybe'() {
-            $.$mol_assert_equal($.$mol_maybe(0)[0], 0);
-            $.$mol_assert_equal($.$mol_maybe(false)[0], false);
-            $.$mol_assert_equal($.$mol_maybe(null)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0)[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(void 0).map(v => v.toString())[0], void 0);
-            $.$mol_assert_equal($.$mol_maybe(0).map(v => v.toString())[0], '0');
-        },
-    });
-})($ || ($ = {}));
-//maybe.test.js.map
-;
-"use strict";
-var $;
-(function ($_1) {
-    $_1.$mol_test_mocks.push($ => {
-        var _a;
-        $.$mol_log2 = (_a = class extends $_1.$mol_log2 {
-            },
-            _a.current = new $_1.$mol_log2(null, '$mol_log2_mock', []),
-            _a);
-    });
-})($ || ($ = {}));
-//log2.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_after_mock_queue = [];
-    function $mol_after_mock_warp() {
-        const queue = $.$mol_after_mock_queue.splice(0);
-        for (const task of queue)
-            task();
-    }
-    $.$mol_after_mock_warp = $mol_after_mock_warp;
-    class $mol_after_mock_commmon extends $.$mol_object2 {
-        constructor(task) {
-            super();
-            this.task = task;
-            this.promise = Promise.resolve();
-            this.cancelled = false;
-            $.$mol_after_mock_queue.push(task);
-        }
-        destructor() {
-            const index = $.$mol_after_mock_queue.indexOf(this.task);
-            if (index >= 0)
-                $.$mol_after_mock_queue.splice(index, 1);
-        }
-    }
-    $.$mol_after_mock_commmon = $mol_after_mock_commmon;
-    class $mol_after_mock_timeout extends $mol_after_mock_commmon {
-        constructor(delay, task) {
-            super(task);
-            this.delay = delay;
-        }
-    }
-    $.$mol_after_mock_timeout = $mol_after_mock_timeout;
-})($ || ($ = {}));
-//mock.test.js.map
-;
-"use strict";
-var $;
-(function ($_1) {
-    $_1.$mol_test_mocks.push($ => {
-        $.$mol_after_tick = $_1.$mol_after_mock_commmon;
-    });
-})($ || ($ = {}));
-//tick.test.js.map
 ;
 "use strict";
 var $;
@@ -972,145 +976,172 @@ var $;
 (function ($_1) {
     $_1.$mol_test({
         'Value has js-path name'() {
-            class App extends $_1.$mol_object2 {
-                static get title() { return new $_1.$mol_object2; }
-            }
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "title", null);
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get title() { return new $_1.$mol_object2; }
+                }
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "title", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(`${App.title}`, 'App.title');
         },
         'Simple property'() {
-            class App extends $_1.$mol_object2 {
-            }
-            App.value = 1;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "value", void 0);
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                }
+                App.value = 1;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "value", void 0);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.value, 1);
             App.value = 2;
             $_1.$mol_assert_equal(App.value, 2);
         },
         'Instant actualization'() {
-            class Source extends $_1.$mol_object2 {
-                constructor() {
-                    super(...arguments);
-                    this.value = 1;
+            let Source = (() => {
+                class Source extends $_1.$mol_object2 {
+                    constructor() {
+                        super(...arguments);
+                        this.value = 1;
+                    }
                 }
-            }
-            __decorate([
-                $_1.$mol_atom2_field
-            ], Source.prototype, "value", void 0);
-            class App extends $_1.$mol_object2 {
-                static get source() { return Source.create(); }
-                static get value() { return this.source.value + 1; }
-            }
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "source", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "value", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], Source.prototype, "value", void 0);
+                return Source;
+            })();
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get source() { return Source.create(); }
+                    static get value() { return this.source.value + 1; }
+                }
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "source", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "value", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.value, 2);
             App.source.value = 2;
             $_1.$mol_assert_equal(App.value, 3);
         },
         'Access to cached value'() {
-            class App extends $_1.$mol_object2 {
-                static get value() { return 1; }
-            }
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "value", null);
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get value() { return 1; }
+                }
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "value", null);
+                return App;
+            })();
             $_1.$mol_assert_equal($_1.$mol_atom2_value(() => App.value), undefined);
             $_1.$mol_assert_equal(App.value, 1);
             $_1.$mol_assert_equal($_1.$mol_atom2_value(() => App.value), 1);
         },
         'Do not recalc slaves on equal changes'() {
-            class App extends $_1.$mol_object2 {
-                static get result() { return this.first[0] + this.counter++; }
-            }
-            App.first = [1];
-            App.counter = 0;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "first", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get result() { return this.first[0] + this.counter++; }
+                }
+                App.first = [1];
+                App.counter = 0;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "first", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.result, 1);
             App.first = [1];
             $_1.$mol_assert_equal(App.result, 1);
         },
         'Do not recalc grand slave on equal direct slave result '() {
-            class App extends $_1.$mol_object2 {
-                static get second() { return Math.abs(this.first); }
-                static get result() { return this.second + ++this.counter; }
-            }
-            App.first = 1;
-            App.counter = 0;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "first", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "second", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get second() { return Math.abs(this.first); }
+                    static get result() { return this.second + ++this.counter; }
+                }
+                App.first = 1;
+                App.counter = 0;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "first", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "second", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.result, 2);
             App.first = -1;
             $_1.$mol_assert_equal(App.result, 2);
         },
         'Recalc when [not changed master] changes [following master]'() {
-            class App extends $_1.$mol_object2 {
-                static get second() {
-                    this.third = this.first;
-                    return 0;
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get second() {
+                        this.third = this.first;
+                        return 0;
+                    }
+                    static get result() { return this.second + this.third + ++this.counter; }
                 }
-                static get result() { return this.second + this.third + ++this.counter; }
-            }
-            App.first = 1;
-            App.third = 0;
-            App.counter = 0;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "first", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "second", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "third", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+                App.first = 1;
+                App.third = 0;
+                App.counter = 0;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "first", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "second", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "third", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.result, 2);
             App.first = 5;
             $_1.$mol_assert_equal(App.result, 7);
         },
         'Branch switching'() {
-            class App extends $_1.$mol_object2 {
-                static get second() { return 2; }
-                static get result() {
-                    return (this.condition ? this.first : this.second) + this.counter++;
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get second() { return 2; }
+                    static get result() {
+                        return (this.condition ? this.first : this.second) + this.counter++;
+                    }
                 }
-            }
-            App.first = 1;
-            App.condition = true;
-            App.counter = 0;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "first", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "second", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "condition", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+                App.first = 1;
+                App.condition = true;
+                App.counter = 0;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "first", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "second", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "condition", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.result, 1);
             App.condition = false;
             $_1.$mol_assert_equal(App.result, 3);
@@ -1118,73 +1149,85 @@ var $;
             $_1.$mol_assert_equal(App.result, 3);
         },
         'Forbidden self invalidation'() {
-            class App extends $_1.$mol_object2 {
-                static get second() { return this.first + 1; }
-                static get result() {
-                    this.second;
-                    return this.first++;
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get second() { return this.first + 1; }
+                    static get result() {
+                        this.second;
+                        return this.first++;
+                    }
                 }
-            }
-            App.first = 1;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "first", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "second", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+                App.first = 1;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "first", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "second", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             $_1.$mol_assert_fail(() => App.result);
         },
         'Side effect inside computation'() {
-            class App extends $_1.$mol_object2 {
-                static increase() { return ++this.first; }
-                static get result() {
-                    return this.increase() + 1;
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static increase() { return ++this.first; }
+                    static get result() {
+                        return this.increase() + 1;
+                    }
                 }
-            }
-            App.first = 1;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "first", void 0);
-            __decorate([
-                $_1.$mol_fiber.method
-            ], App, "increase", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+                App.first = 1;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "first", void 0);
+                __decorate([
+                    $_1.$mol_fiber.method
+                ], App, "increase", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.result, 3);
         },
         'Forbidden cyclic dependency'() {
-            class App extends $_1.$mol_object2 {
-                static get first() { return this.second - 1; }
-                static get second() { return this.first + 1; }
-            }
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "first", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "second", null);
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get first() { return this.second - 1; }
+                    static get second() { return this.first + 1; }
+                }
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "first", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "second", null);
+                return App;
+            })();
             $_1.$mol_assert_fail(() => App.first);
         },
         'Forget sub fibers on complete'() {
-            class App extends $_1.$mol_object2 {
-                static count() { return this.counter++; }
-                static get result() { return this.count() + this.data; }
-            }
-            App.counter = 0;
-            App.data = 1;
-            __decorate([
-                $_1.$mol_fiber.method
-            ], App, "count", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "data", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static count() { return this.counter++; }
+                    static get result() { return this.count() + this.data; }
+                }
+                App.counter = 0;
+                App.data = 1;
+                __decorate([
+                    $_1.$mol_fiber.method
+                ], App, "count", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "data", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.result, 1);
             App.data = 2;
             $_1.$mol_assert_equal(App.result, 3);
@@ -1194,24 +1237,27 @@ var $;
             class Having extends $_1.$mol_object2 {
                 destructor() { counter++; }
             }
-            class App extends $_1.$mol_object2 {
-                static get having() { return Having.create(); }
-                static get result() {
-                    if (this.condition)
-                        this.having;
-                    return 0;
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get having() { return Having.create(); }
+                    static get result() {
+                        if (this.condition)
+                            this.having;
+                        return 0;
+                    }
                 }
-            }
-            App.condition = true;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "having", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "condition", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+                App.condition = true;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "having", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "condition", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             App.result;
             App.condition = false;
             App.result;
@@ -1220,21 +1266,24 @@ var $;
             $_1.$mol_assert_equal(counter, 1);
         },
         async 'Do not destroy putted value'() {
-            class App extends $_1.$mol_object2 {
-                static get target() {
-                    return this.condition ? this.source : 0;
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get target() {
+                        return this.condition ? this.source : 0;
+                    }
                 }
-            }
-            App.condition = true;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "source", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "condition", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "target", null);
+                App.condition = true;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "source", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "condition", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "target", null);
+                return App;
+            })();
             App.source = 1;
             $_1.$mol_assert_equal(App.target, 1);
             App.condition = false;
@@ -1244,24 +1293,27 @@ var $;
             $_1.$mol_assert_equal(App.target, 1);
         },
         'Restore after error'() {
-            class App extends $_1.$mol_object2 {
-                static get broken() {
-                    if (this.condition)
-                        $_1.$mol_fail(new Error('test error'));
-                    return 1;
+            let App = (() => {
+                class App extends $_1.$mol_object2 {
+                    static get broken() {
+                        if (this.condition)
+                            $_1.$mol_fail(new Error('test error'));
+                        return 1;
+                    }
+                    static get result() { return this.broken; }
                 }
-                static get result() { return this.broken; }
-            }
-            App.condition = false;
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "condition", void 0);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "broken", null);
-            __decorate([
-                $_1.$mol_atom2_field
-            ], App, "result", null);
+                App.condition = false;
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "condition", void 0);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "broken", null);
+                __decorate([
+                    $_1.$mol_atom2_field
+                ], App, "result", null);
+                return App;
+            })();
             $_1.$mol_assert_equal(App.result, 1);
             App.condition = true;
             $_1.$mol_assert_fail(() => App.result);
@@ -1297,37 +1349,43 @@ var $;
 (function ($) {
     $.$mol_test({
         'Property method'() {
-            class App extends $.$mol_object2 {
-                static value(next = 1) { return next + 1; }
-            }
-            __decorate([
-                $.$mol_mem
-            ], App, "value", null);
+            let App = (() => {
+                class App extends $.$mol_object2 {
+                    static value(next = 1) { return next + 1; }
+                }
+                __decorate([
+                    $.$mol_mem
+                ], App, "value", null);
+                return App;
+            })();
             $.$mol_assert_equal(App.value(), 2);
             App.value(2);
             $.$mol_assert_equal(App.value(), 3);
         },
         'auto sync of properties'() {
-            class X extends $.$mol_object2 {
-                foo(next) {
-                    return next || 1;
+            let X = (() => {
+                class X extends $.$mol_object2 {
+                    foo(next) {
+                        return next || 1;
+                    }
+                    bar() {
+                        return this.foo() + 1;
+                    }
+                    xxx() {
+                        return this.bar() + 1;
+                    }
                 }
-                bar() {
-                    return this.foo() + 1;
-                }
-                xxx() {
-                    return this.bar() + 1;
-                }
-            }
-            __decorate([
-                $.$mol_mem
-            ], X.prototype, "foo", null);
-            __decorate([
-                $.$mol_mem
-            ], X.prototype, "bar", null);
-            __decorate([
-                $.$mol_mem
-            ], X.prototype, "xxx", null);
+                __decorate([
+                    $.$mol_mem
+                ], X.prototype, "foo", null);
+                __decorate([
+                    $.$mol_mem
+                ], X.prototype, "bar", null);
+                __decorate([
+                    $.$mol_mem
+                ], X.prototype, "xxx", null);
+                return X;
+            })();
             const x = new X;
             $.$mol_assert_equal(x.bar(), 2);
             $.$mol_assert_equal(x.xxx(), 3);
@@ -1337,32 +1395,35 @@ var $;
         async 'must be deferred destroyed when no longer referenced'() {
             let foo;
             let foo_destroyed = false;
-            class B extends $.$mol_object2 {
-                showing(next) {
-                    if (next === void 0)
-                        return true;
-                    return next;
+            let B = (() => {
+                class B extends $.$mol_object2 {
+                    showing(next) {
+                        if (next === void 0)
+                            return true;
+                        return next;
+                    }
+                    foo() {
+                        return foo = new class extends $.$mol_object {
+                            destructor() {
+                                foo_destroyed = true;
+                            }
+                        };
+                    }
+                    bar() {
+                        return this.showing() ? this.foo() : null;
+                    }
                 }
-                foo() {
-                    return foo = new class extends $.$mol_object {
-                        destructor() {
-                            foo_destroyed = true;
-                        }
-                    };
-                }
-                bar() {
-                    return this.showing() ? this.foo() : null;
-                }
-            }
-            __decorate([
-                $.$mol_mem
-            ], B.prototype, "showing", null);
-            __decorate([
-                $.$mol_mem
-            ], B.prototype, "foo", null);
-            __decorate([
-                $.$mol_mem
-            ], B.prototype, "bar", null);
+                __decorate([
+                    $.$mol_mem
+                ], B.prototype, "showing", null);
+                __decorate([
+                    $.$mol_mem
+                ], B.prototype, "foo", null);
+                __decorate([
+                    $.$mol_mem
+                ], B.prototype, "bar", null);
+                return B;
+            })();
             var b = new B;
             var bar = b.bar();
             $.$mol_assert_ok(bar);
@@ -1376,26 +1437,29 @@ var $;
             $.$mol_assert_unique(b.bar(), bar);
         },
         async 'wait for data'() {
-            class Test extends $.$mol_object2 {
-                source() {
-                    return $.$mol_fiber_sync(() => new Promise(done => done('Jin')))();
+            let Test = (() => {
+                class Test extends $.$mol_object2 {
+                    source() {
+                        return $.$mol_fiber_sync(() => new Promise(done => done('Jin')))();
+                    }
+                    middle() {
+                        return this.source();
+                    }
+                    target() {
+                        return this.middle();
+                    }
                 }
-                middle() {
-                    return this.source();
-                }
-                target() {
-                    return this.middle();
-                }
-            }
-            __decorate([
-                $.$mol_mem
-            ], Test.prototype, "source", null);
-            __decorate([
-                $.$mol_mem
-            ], Test.prototype, "middle", null);
-            __decorate([
-                $.$mol_mem
-            ], Test.prototype, "target", null);
+                __decorate([
+                    $.$mol_mem
+                ], Test.prototype, "source", null);
+                __decorate([
+                    $.$mol_mem
+                ], Test.prototype, "middle", null);
+                __decorate([
+                    $.$mol_mem
+                ], Test.prototype, "target", null);
+                return Test;
+            })();
             const t = new Test;
             $.$mol_assert_fail(() => t.target().valueOf(), Promise);
             await $.$mol_fiber_warp();
@@ -1498,33 +1562,39 @@ var $;
     $.$mol_test({
         'keyed reactive properties'() {
             $.$mol_fiber_warp();
-            class Fib extends $.$mol_object2 {
-                static value(index, next) {
-                    if (next)
-                        return next;
-                    if (index < 2)
-                        return 1;
-                    return this.value(index - 1) + this.value(index - 2);
+            let Fib = (() => {
+                class Fib extends $.$mol_object2 {
+                    static value(index, next) {
+                        if (next)
+                            return next;
+                        if (index < 2)
+                            return 1;
+                        return this.value(index - 1) + this.value(index - 2);
+                    }
                 }
-            }
-            __decorate([
-                $.$mol_mem_key
-            ], Fib, "value", null);
+                __decorate([
+                    $.$mol_mem_key
+                ], Fib, "value", null);
+                return Fib;
+            })();
             $.$mol_assert_equal(Fib.value(10), 89);
             Fib.value(1, 2);
             $.$mol_assert_equal(Fib.value(10), 144);
         },
         'cached property with simple key'() {
-            class X extends $.$mol_object2 {
-                foo(id, next) {
-                    if (next == null)
-                        return new Number(123);
-                    return new Number(next);
+            let X = (() => {
+                class X extends $.$mol_object2 {
+                    foo(id, next) {
+                        if (next == null)
+                            return new Number(123);
+                        return new Number(next);
+                    }
                 }
-            }
-            __decorate([
-                $.$mol_mem_key
-            ], X.prototype, "foo", null);
+                __decorate([
+                    $.$mol_mem_key
+                ], X.prototype, "foo", null);
+                return X;
+            })();
             const x = new X;
             $.$mol_assert_equal(x.foo(0).valueOf(), 123);
             $.$mol_assert_equal(x.foo(0), x.foo(0));
@@ -1535,14 +1605,17 @@ var $;
             $.$mol_assert_equal(x.foo(0).valueOf(), 123);
         },
         'cached property with complex key'() {
-            class X extends $.$mol_object2 {
-                foo(ids) {
-                    return Math.random();
+            let X = (() => {
+                class X extends $.$mol_object2 {
+                    foo(ids) {
+                        return Math.random();
+                    }
                 }
-            }
-            __decorate([
-                $.$mol_mem_key
-            ], X.prototype, "foo", null);
+                __decorate([
+                    $.$mol_mem_key
+                ], X.prototype, "foo", null);
+                return X;
+            })();
             const x = new X;
             $.$mol_assert_equal(x.foo([0, 1]), x.foo([0, 1]));
             $.$mol_assert_unique(x.foo([0, 1]), x.foo([0, 2]));
@@ -1550,54 +1623,6 @@ var $;
     });
 })($ || ($ = {}));
 //key.test.js.map
-;
-"use strict";
-var $;
-(function ($_1) {
-    $_1.$mol_test_mocks.push(context => {
-        class $mol_state_arg_mock extends $_1.$mol_state_arg {
-            static href(next) { return next || ''; }
-        }
-        __decorate([
-            $_1.$mol_mem
-        ], $mol_state_arg_mock, "href", null);
-        context.$mol_state_arg = $mol_state_arg_mock;
-    });
-    $_1.$mol_test({
-        'args as dictionary'($) {
-            $.$mol_state_arg.href('#foo=bar/xxx');
-            $_1.$mol_assert_like($.$mol_state_arg.dict(), { foo: 'bar', xxx: '' });
-            $.$mol_state_arg.dict({ foo: null, yyy: '', lol: '123' });
-            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#yyy/lol=123');
-        },
-        'one value from args'($) {
-            $.$mol_state_arg.href('#foo=bar/xxx');
-            $_1.$mol_assert_equal($.$mol_state_arg.value('foo'), 'bar');
-            $_1.$mol_assert_equal($.$mol_state_arg.value('xxx'), '');
-            $.$mol_state_arg.value('foo', 'lol');
-            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#foo=lol/xxx');
-            $.$mol_state_arg.value('foo', '');
-            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#foo/xxx');
-            $.$mol_state_arg.value('foo', null);
-            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#xxx');
-        },
-        'nested args'($) {
-            const base = new $.$mol_state_arg('nested.');
-            class Nested extends $_1.$mol_state_arg {
-                constructor(prefix) {
-                    super(base.prefix + prefix);
-                }
-            }
-            Nested.value = (key, next) => base.value(key, next);
-            $.$mol_state_arg.href('#foo=bar/nested.xxx=123');
-            $_1.$mol_assert_equal(Nested.value('foo'), null);
-            $_1.$mol_assert_equal(Nested.value('xxx'), '123');
-            Nested.value('foo', 'lol');
-            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#foo=bar/nested.xxx=123/nested.foo=lol');
-        },
-    });
-})($ || ($ = {}));
-//arg.web.test.js.map
 ;
 "use strict";
 var $;
@@ -1657,20 +1682,23 @@ var $;
 (function ($) {
     $.$mol_test({
         async 'Autorun'() {
-            class App extends $.$mol_object2 {
-                static get init() {
-                    ++this.counter;
-                    return this.state;
+            let App = (() => {
+                class App extends $.$mol_object2 {
+                    static get init() {
+                        ++this.counter;
+                        return this.state;
+                    }
                 }
-            }
-            App.state = 1;
-            App.counter = 0;
-            __decorate([
-                $.$mol_atom2_field
-            ], App, "state", void 0);
-            __decorate([
-                $.$mol_atom2_field
-            ], App, "init", null);
+                App.state = 1;
+                App.counter = 0;
+                __decorate([
+                    $.$mol_atom2_field
+                ], App, "state", void 0);
+                __decorate([
+                    $.$mol_atom2_field
+                ], App, "init", null);
+                return App;
+            })();
             const autorun = $.$mol_atom2_autorun(() => App.init);
             try {
                 await $.$mol_fiber_warp();
@@ -1725,14 +1753,17 @@ var $;
         'id auto generation'() {
             class $mol_view_test_item extends $.$mol_view {
             }
-            class $mol_view_test_block extends $.$mol_view {
-                element(id) {
-                    return new $mol_view_test_item();
+            let $mol_view_test_block = (() => {
+                class $mol_view_test_block extends $.$mol_view {
+                    element(id) {
+                        return new $mol_view_test_item();
+                    }
                 }
-            }
-            __decorate([
-                $.$mol_mem_key
-            ], $mol_view_test_block.prototype, "element", null);
+                __decorate([
+                    $.$mol_mem_key
+                ], $mol_view_test_block.prototype, "element", null);
+                return $mol_view_test_block;
+            })();
             var x = $mol_view_test_block.Root(0);
             $.$mol_assert_equal(x.dom_node().id, '$mol_view_test_block.Root(0)');
             $.$mol_assert_equal(x.element(0).dom_node().id, '$mol_view_test_block.Root(0).element(0)');
@@ -1755,14 +1786,17 @@ var $;
         'bem attributes generation'() {
             class $mol_view_test_item extends $.$mol_view {
             }
-            class $mol_view_test_block extends $.$mol_view {
-                Element(id) {
-                    return new $mol_view_test_item();
+            let $mol_view_test_block = (() => {
+                class $mol_view_test_block extends $.$mol_view {
+                    Element(id) {
+                        return new $mol_view_test_item();
+                    }
                 }
-            }
-            __decorate([
-                $.$mol_mem_key
-            ], $mol_view_test_block.prototype, "Element", null);
+                __decorate([
+                    $.$mol_mem_key
+                ], $mol_view_test_block.prototype, "Element", null);
+                return $mol_view_test_block;
+            })();
             var x = new $mol_view_test_block();
             $.$mol_assert_equal(x.dom_node().getAttribute('mol_view_test_block'), '');
             $.$mol_assert_equal(x.dom_node().getAttribute('mol_view'), '');
@@ -1822,90 +1856,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_test({
-        'local get set delete'() {
-            var key = '$mol_state_local_test:' + Math.random();
-            $.$mol_assert_equal($.$mol_state_local.value(key), null);
-            $.$mol_state_local.value(key, 123);
-            $.$mol_assert_equal($.$mol_state_local.value(key), 123);
-            $.$mol_state_local.value(key, null);
-            $.$mol_assert_equal($.$mol_state_local.value(key), null);
-        },
-    });
-})($ || ($ = {}));
-//local.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test_mocks.push(context => {
-        class $mol_state_local_mock extends $.$mol_state_local {
-            static value(key, next = this.state[key], force) {
-                return this.state[key] = (next || null);
-            }
-        }
-        $mol_state_local_mock.state = {};
-        __decorate([
-            $.$mol_mem_key
-        ], $mol_state_local_mock, "value", null);
-        context.$mol_state_local = $mol_state_local_mock;
-    });
-})($ || ($ = {}));
-//local.mock.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'decode utf8 string'() {
-            const str = 'Hello, ΧΨΩЫ';
-            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
-            $.$mol_assert_equal($.$mol_charset_decode(encoded), str);
-            $.$mol_assert_equal($.$mol_charset_decode(encoded, 'utf8'), str);
-        },
-        'decode empty string'() {
-            const encoded = new Uint8Array([]);
-            $.$mol_assert_equal($.$mol_charset_decode(encoded), '');
-        },
-    });
-})($ || ($ = {}));
-//decode.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'encode utf8 string'() {
-            const str = 'Hello, ΧΨΩЫ';
-            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
-            $.$mol_assert_like($.$mol_charset_encode(str), encoded);
-        },
-    });
-})($ || ($ = {}));
-//encode.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'null by default'() {
-            const key = String(Math.random());
-            $.$mol_assert_equal($.$mol_state_session.value(key), null);
-        },
-        'storing'() {
-            const key = String(Math.random());
-            $.$mol_state_session.value(key, '$mol_state_session_test');
-            $.$mol_assert_equal($.$mol_state_session.value(key), '$mol_state_session_test');
-            $.$mol_state_session.value(key, null);
-            $.$mol_assert_equal($.$mol_state_session.value(key), null);
-        },
-    });
-})($ || ($ = {}));
-//session.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_style_sheet_test1 extends $.$mol_view {
         Item() { return new $.$mol_view; }
     }
@@ -1919,10 +1869,10 @@ var $;
             class $mol_style_sheet_test extends $.$mol_view {
             }
             const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
-                color: 'red',
                 display: 'block',
+                zIndex: 1,
             });
-            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tcolor: red;\n\tdisplay: block;\n}\n');
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tdisplay: block;\n\tz-index: 1;\n}\n');
         },
         'various units'() {
             class $mol_style_sheet_test extends $.$mol_view {
@@ -1937,7 +1887,7 @@ var $;
         'various functions'() {
             class $mol_style_sheet_test extends $.$mol_view {
             }
-            const { calc, fit_content } = $.$mol_style_func;
+            const { calc } = $.$mol_style_func;
             const { px, per } = $.$mol_style_unit;
             const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
                 width: calc(`${per(100)} - ${px(1)}`),
@@ -1960,9 +1910,49 @@ var $;
             }
             const { px } = $.$mol_style_unit;
             const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
-                padding: [0, 'auto']
+                padding: [px(5), 'auto']
             });
-            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tpadding: 0 auto;\n}\n');
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tpadding: 5px auto;\n}\n');
+        },
+        'sequenced values'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { url } = $.$mol_style_func;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                background: {
+                    image: [[url('foo')], [url('bar')]],
+                },
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tbackground-image: url("foo"),url("bar");\n}\n');
+        },
+        'sequenced structs'() {
+            class $mol_style_sheet_test extends $.$mol_view {
+            }
+            const { rem } = $.$mol_style_unit;
+            const { hsla } = $.$mol_style_func;
+            const sheet = $.$mol_style_sheet($mol_style_sheet_test, {
+                box: {
+                    shadow: [
+                        {
+                            inset: true,
+                            x: 0,
+                            y: 0,
+                            blur: rem(.5),
+                            spread: 0,
+                            color: 'red',
+                        },
+                        {
+                            inset: false,
+                            x: 0,
+                            y: 0,
+                            blur: rem(.5),
+                            spread: 0,
+                            color: 'blue',
+                        },
+                    ],
+                },
+            });
+            $.$mol_assert_equal(sheet, '[mol_style_sheet_test] {\n\tbox-shadow: inset 0 0 0.5rem 0 red,0 0 0.5rem 0 blue;\n}\n');
         },
         'component block styles with pseudo class'() {
             class $mol_style_sheet_test extends $.$mol_view {
@@ -2126,17 +2116,39 @@ var $;
 var $;
 (function ($) {
     $.$mol_test({
+        'null by default'() {
+            const key = String(Math.random());
+            $.$mol_assert_equal($.$mol_state_session.value(key), null);
+        },
+        'storing'() {
+            const key = String(Math.random());
+            $.$mol_state_session.value(key, '$mol_state_session_test');
+            $.$mol_assert_equal($.$mol_state_session.value(key), '$mol_state_session_test');
+            $.$mol_state_session.value(key, null);
+            $.$mol_assert_equal($.$mol_state_session.value(key), null);
+        },
+    });
+})($ || ($ = {}));
+//session.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
         'memoize field'() {
-            class Foo {
-                static get two() {
-                    return ++this.one;
+            let Foo = (() => {
+                class Foo {
+                    static get two() {
+                        return ++this.one;
+                    }
+                    static set two(next) { }
                 }
-                static set two(next) { }
-            }
-            Foo.one = 1;
-            __decorate([
-                $.$mol_memo.field
-            ], Foo, "two", null);
+                Foo.one = 1;
+                __decorate([
+                    $.$mol_memo.field
+                ], Foo, "two", null);
+                return Foo;
+            })();
             $.$mol_assert_equal(Foo.two, 2);
             $.$mol_assert_equal(Foo.two, 2);
             Foo.two = 3;
@@ -2149,173 +2161,181 @@ var $;
 ;
 "use strict";
 var $;
-(function ($) {
-    $.$mol_test({
-        'search numbers'() {
-            const syntax = new $.$mol_syntax({
-                'number': /[+-]?\d+(?:\.\d+)?/
-            });
-            const serial = (tokens) => {
-                return tokens.map(token => `${token.name}=${token.found}`).join('|');
-            };
-            $.$mol_assert_equal(serial(syntax.tokenize('')), '');
-            $.$mol_assert_equal(serial(syntax.tokenize('foo')), '=foo');
-            $.$mol_assert_equal(serial(syntax.tokenize('123')), 'number=123');
-            $.$mol_assert_equal(serial(syntax.tokenize('foo123bar')), '=foo|number=123|=bar');
-            $.$mol_assert_equal(serial(syntax.tokenize('foo123bar456')), '=foo|number=123|=bar|number=456');
-            $.$mol_assert_equal(serial(syntax.tokenize('foo123\n\nbar456\n')), '=foo|number=123|=\n\nbar|number=456|=\n');
-        }
+(function ($_1) {
+    $_1.$mol_test_mocks.push(context => {
+        let $mol_state_arg_mock = (() => {
+            class $mol_state_arg_mock extends $_1.$mol_state_arg {
+                static href(next) { return next || ''; }
+            }
+            __decorate([
+                $_1.$mol_mem
+            ], $mol_state_arg_mock, "href", null);
+            return $mol_state_arg_mock;
+        })();
+        context.$mol_state_arg = $mol_state_arg_mock;
+    });
+    $_1.$mol_test({
+        'args as dictionary'($) {
+            $.$mol_state_arg.href('#foo=bar/xxx');
+            $_1.$mol_assert_like($.$mol_state_arg.dict(), { foo: 'bar', xxx: '' });
+            $.$mol_state_arg.dict({ foo: null, yyy: '', lol: '123' });
+            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#yyy/lol=123');
+        },
+        'one value from args'($) {
+            $.$mol_state_arg.href('#foo=bar/xxx');
+            $_1.$mol_assert_equal($.$mol_state_arg.value('foo'), 'bar');
+            $_1.$mol_assert_equal($.$mol_state_arg.value('xxx'), '');
+            $.$mol_state_arg.value('foo', 'lol');
+            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#foo=lol/xxx');
+            $.$mol_state_arg.value('foo', '');
+            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#foo/xxx');
+            $.$mol_state_arg.value('foo', null);
+            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#xxx');
+        },
+        'nested args'($) {
+            const base = new $.$mol_state_arg('nested.');
+            let Nested = (() => {
+                class Nested extends $_1.$mol_state_arg {
+                    constructor(prefix) {
+                        super(base.prefix + prefix);
+                    }
+                }
+                Nested.value = (key, next) => base.value(key, next);
+                return Nested;
+            })();
+            $.$mol_state_arg.href('#foo=bar/nested.xxx=123');
+            $_1.$mol_assert_equal(Nested.value('foo'), null);
+            $_1.$mol_assert_equal(Nested.value('xxx'), '123');
+            Nested.value('foo', 'lol');
+            $_1.$mol_assert_equal($.$mol_state_arg.href().replace(/.*#/, '#'), '#foo=bar/nested.xxx=123/nested.foo=lol');
+        },
     });
 })($ || ($ = {}));
-//syntax.test.js.map
+//arg.web.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test_mocks.push(context => {
+        let $mol_state_local_mock = (() => {
+            class $mol_state_local_mock extends $.$mol_state_local {
+                static value(key, next = this.state[key], force) {
+                    return this.state[key] = (next || null);
+                }
+            }
+            $mol_state_local_mock.state = {};
+            __decorate([
+                $.$mol_mem_key
+            ], $mol_state_local_mock, "value", null);
+            return $mol_state_local_mock;
+        })();
+        context.$mol_state_local = $mol_state_local_mock;
+    });
+})($ || ($ = {}));
+//local.mock.test.js.map
 ;
 "use strict";
 var $;
 (function ($) {
     $.$mol_test({
-        'only text'() {
-            const tokens = $.$mol_syntax_md_flow.tokenize('Hello,\nWorld..\r\n\r\n\nof Love!');
-            $.$mol_assert_equal(tokens.map(token => token.found).join('|'), 'Hello,\nWorld..\r\n\r\n\n|of Love!');
+        'local get set delete'() {
+            var key = '$mol_state_local_test:' + Math.random();
+            $.$mol_assert_equal($.$mol_state_local.value(key), null);
+            $.$mol_state_local.value(key, 123);
+            $.$mol_assert_equal($.$mol_state_local.value(key), 123);
+            $.$mol_state_local.value(key, null);
+            $.$mol_assert_equal($.$mol_state_local.value(key), null);
         },
-        'headers and text'() {
-            const tokens = $.$mol_syntax_md_flow.tokenize('# Header1\n\nHello!\n\n## Header2');
-            $.$mol_assert_equal(tokens.length, 3);
-            $.$mol_assert_equal(tokens[0].name, 'header');
-            $.$mol_assert_equal(tokens[0].chunks.join('|'), '#| |Header1|\n\n');
-            $.$mol_assert_equal(tokens[1].name, 'block');
-            $.$mol_assert_equal(tokens[1].chunks.join('|'), 'Hello!|\n\n');
-            $.$mol_assert_equal(tokens[2].name, 'header');
-            $.$mol_assert_equal(tokens[2].found, '## Header2');
-            $.$mol_assert_equal(tokens[2].chunks.join('|'), '##| |Header2|');
+    });
+})($ || ($ = {}));
+//local.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'decode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded), str);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded, 'utf8'), str);
         },
-        'codes and text'() {
-            const tokens = $.$mol_syntax_md_flow.tokenize('```\nstart()\n```\n\n```js\nrestart()\n```\n\nHello!\n\n```\nstop()\n```');
-            $.$mol_assert_equal(tokens.length, 4);
-            $.$mol_assert_equal(tokens[0].name, 'code');
-            $.$mol_assert_equal(tokens[0].chunks.join('|'), '```||start()\n|```|\n\n');
-            $.$mol_assert_equal(tokens[1].name, 'code');
-            $.$mol_assert_equal(tokens[1].chunks.join('|'), '```|js|restart()\n|```|\n\n');
-            $.$mol_assert_equal(tokens[2].name, 'block');
-            $.$mol_assert_equal(tokens[2].chunks.join('|'), 'Hello!|\n\n');
-            $.$mol_assert_equal(tokens[3].name, 'code');
-            $.$mol_assert_equal(tokens[3].chunks.join('|'), '```||stop()\n|```|');
+        'decode empty string'() {
+            const encoded = new Uint8Array([]);
+            $.$mol_assert_equal($.$mol_charset_decode(encoded), '');
         },
-        'table'() {
-            const tokens = $.$mol_syntax_md_flow.tokenize('| header1 | header2\n|----|----\n| Cell11 | Cell12\n| Cell21 | Cell22\n\n| Cell11 | Cell12\n| Cell21 | Cell22\n');
-            $.$mol_assert_equal(tokens.length, 2);
-            $.$mol_assert_equal(tokens[0].name, 'table');
-            $.$mol_assert_equal(tokens[0].chunks[0], '| header1 | header2\n|----|----\n| Cell11 | Cell12\n| Cell21 | Cell22\n');
-            $.$mol_assert_equal(tokens[1].name, 'table');
-            $.$mol_assert_equal(tokens[1].chunks[0], '| Cell11 | Cell12\n| Cell21 | Cell22\n');
-        }
+    });
+})($ || ($ = {}));
+//decode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'encode utf8 string'() {
+            const str = 'Hello, ΧΨΩЫ';
+            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
+            $.$mol_assert_like($.$mol_charset_encode(str), encoded);
+        },
+    });
+})($ || ($ = {}));
+//encode.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'all cases of using maybe'() {
+            $.$mol_assert_equal($.$mol_maybe(0)[0], 0);
+            $.$mol_assert_equal($.$mol_maybe(false)[0], false);
+            $.$mol_assert_equal($.$mol_maybe(null)[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(void 0)[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(void 0).map(v => v.toString())[0], void 0);
+            $.$mol_assert_equal($.$mol_maybe(0).map(v => v.toString())[0], '0');
+        },
+    });
+})($ || ($ = {}));
+//maybe.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        '$mol_syntax2_md_flow'() {
+            const check = (input, right) => {
+                const tokens = [];
+                $.$mol_syntax2_md_flow.tokenize(input, (...token) => tokens.push(token));
+                $.$mol_assert_like(JSON.stringify(tokens), JSON.stringify(right));
+            };
+            check('Hello,\nWorld..\r\n\r\n\nof Love!', [
+                ['block', 'Hello,\nWorld..\r\n\r\n\n', ['Hello,\nWorld..', '\r\n\r\n\n'], 0],
+                ['block', 'of Love!', ['of Love!', ''], 19],
+            ]);
+            check('# Header1\n\nHello!\n\n## Header2', [
+                ['header', '# Header1\n\n', ['#', ' ', 'Header1', '\n\n'], 0],
+                ['block', 'Hello!\n\n', ['Hello!', '\n\n'], 11],
+                ['header', '## Header2', ['##', ' ', 'Header2', ''], 19],
+            ]);
+            check('```\nstart()\n```\n\n```js\nrestart()\n```\n\nHello!\n\n```\nstop()\n```', [
+                ['code', '```\nstart()\n```\n\n', ['```', '', 'start()\n', '```', '\n\n'], 0],
+                ['code', '```js\nrestart()\n```\n\n', ['```', 'js', 'restart()\n', '```', '\n\n'], 17],
+                ['block', 'Hello!\n\n', ['Hello!', '\n\n'], 38],
+                ['code', '```\nstop()\n```', ['```', '', 'stop()\n', '```', ''], 46],
+            ]);
+            check('| header1 | header2\n|----|----\n| Cell11 | Cell12\n| Cell21 | Cell22\n\n| Cell11 | Cell12\n| Cell21 | Cell22\n', [
+                ['table', '| header1 | header2\n|----|----\n| Cell11 | Cell12\n| Cell21 | Cell22\n\n', ['| header1 | header2\n|----|----\n| Cell11 | Cell12\n| Cell21 | Cell22\n', '\n'], 0],
+                ['table', '| Cell11 | Cell12\n| Cell21 | Cell22\n', ['| Cell11 | Cell12\n| Cell21 | Cell22\n', ''], 68],
+            ]);
+        },
     });
 })($ || ($ = {}));
 //md.test.js.map
 ;
 "use strict";
-//equals.js.map
-;
-"use strict";
 //equals.test.js.map
 ;
 "use strict";
-var $;
-(function ($) {
-    function $mol_diff_path(...paths) {
-        const limit = Math.min(...paths.map(path => path.length));
-        lookup: for (var i = 0; i < limit; ++i) {
-            const first = paths[0][i];
-            for (let j = 1; j < paths.length; ++j) {
-                if (paths[j][i] !== first)
-                    break lookup;
-            }
-        }
-        return {
-            prefix: paths[0].slice(0, i),
-            suffix: paths.map(path => path.slice(i)),
-        };
-    }
-    $.$mol_diff_path = $mol_diff_path;
-})($ || ($ = {}));
-//path.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_test({
-        'equal paths'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2, 3, 4],
-                suffix: [[], [], []],
-            });
-        },
-        'different suffix'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 5, 4]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2],
-                suffix: [[3, 4], [3, 5], [5, 4]],
-            });
-        },
-        'one contains other'() {
-            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2], [1, 2, 3]);
-            $.$mol_assert_like(diff, {
-                prefix: [1, 2],
-                suffix: [[3, 4], [], [3]],
-            });
-        },
-        'fully different'() {
-            const diff = $.$mol_diff_path([1, 2], [3, 4], [5, 6]);
-            $.$mol_assert_like(diff, {
-                prefix: [],
-                suffix: [[1, 2], [3, 4], [5, 6]],
-            });
-        },
-    });
-})($ || ($ = {}));
-//path.test.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_error_mix extends Error {
-        constructor(message, ...errors) {
-            super(message);
-            this.errors = errors;
-            if (errors.length) {
-                const stacks = [...errors.map(error => error.message), this.stack];
-                const diff = $.$mol_diff_path(...stacks.map(stack => {
-                    if (!stack)
-                        return [];
-                    return stack.split('\n').reverse();
-                }));
-                const head = diff.prefix.reverse().join('\n');
-                const tails = diff.suffix.map(path => path.reverse().map(line => line.replace(/^(?!\s+at)/, '\tat (.) ')).join('\n')).join('\n\tat (.) -----\n');
-                this.stack = `Error: ${this.constructor.name}\n\tat (.) /"""\\\n${tails}\n\tat (.) \\___/\n${head}`;
-                this.message += errors.map(error => '\n' + error.message).join('');
-            }
-        }
-    }
-    $.$mol_error_mix = $mol_error_mix;
-})($ || ($ = {}));
-//mix.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_jsx_attach(next, action) {
-        const prev = $.$mol_jsx_document;
-        try {
-            $.$mol_jsx_document = next;
-            return action();
-        }
-        finally {
-            $.$mol_jsx_document = prev;
-        }
-    }
-    $.$mol_jsx_attach = $mol_jsx_attach;
-})($ || ($ = {}));
-//attach.js.map
+//equals.js.map
 ;
 "use strict";
 var $;
@@ -2333,33 +2353,19 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_jsx_view extends $.$mol_object2 {
-        static of(node) {
-            return node[this];
+    function $mol_jsx_attach(next, action) {
+        const prev = $.$mol_jsx_document;
+        try {
+            $.$mol_jsx_document = next;
+            return action();
         }
-        valueOf() {
-            const prefix = $.$mol_jsx_prefix;
-            const booked = $.$mol_jsx_booked;
-            const document = $.$mol_jsx_document;
-            try {
-                $.$mol_jsx_prefix = this[Symbol.toStringTag];
-                $.$mol_jsx_booked = new Set;
-                $.$mol_jsx_document = this.ownerDocument;
-                return this.render();
-            }
-            finally {
-                $.$mol_jsx_prefix = prefix;
-                $.$mol_jsx_booked = booked;
-                $.$mol_jsx_document = document;
-            }
-        }
-        render() {
-            return $.$mol_fail(new Error('dom_tree() not implemented'));
+        finally {
+            $.$mol_jsx_document = prev;
         }
     }
-    $.$mol_jsx_view = $mol_jsx_view;
+    $.$mol_jsx_attach = $mol_jsx_attach;
 })($ || ($ = {}));
-//view.js.map
+//attach.js.map
 ;
 "use strict";
 var $;
@@ -2414,27 +2420,33 @@ var $;
         },
         async 'Reactive attached view'() {
             const doc = $.$mol_dom_parse('<html><body id="/foo"></body></html>');
-            class Task {
-                title(next) { return next || 'foo'; }
-            }
-            __decorate([
-                $.$mol_mem
-            ], Task.prototype, "title", null);
-            class App extends $.$mol_jsx_view {
-                task() { return new Task; }
-                valueOf() {
-                    return super.valueOf();
+            let Task = (() => {
+                class Task {
+                    title(next) { return next || 'foo'; }
                 }
-                render() {
-                    return $.$mol_jsx_make("div", null, this.task().title());
+                __decorate([
+                    $.$mol_mem
+                ], Task.prototype, "title", null);
+                return Task;
+            })();
+            let App = (() => {
+                class App extends $.$mol_jsx_view {
+                    task() { return new Task; }
+                    valueOf() {
+                        return super.valueOf();
+                    }
+                    render() {
+                        return $.$mol_jsx_make("div", null, this.task().title());
+                    }
                 }
-            }
-            __decorate([
-                $.$mol_mem
-            ], App.prototype, "task", null);
-            __decorate([
-                $.$mol_mem
-            ], App.prototype, "valueOf", null);
+                __decorate([
+                    $.$mol_mem
+                ], App.prototype, "task", null);
+                __decorate([
+                    $.$mol_mem
+                ], App.prototype, "valueOf", null);
+                return App;
+            })();
             const task = new Task;
             $.$mol_atom2_autorun(() => $.$mol_jsx_attach(doc, () => $.$mol_jsx_make(App, { id: "/foo", task: () => task })));
             await $.$mol_fiber_warp();
@@ -2446,5 +2458,121 @@ var $;
     });
 })($ || ($ = {}));
 //view.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_jsx_view extends $.$mol_object2 {
+        static of(node) {
+            return node[this];
+        }
+        valueOf() {
+            const prefix = $.$mol_jsx_prefix;
+            const booked = $.$mol_jsx_booked;
+            const document = $.$mol_jsx_document;
+            try {
+                $.$mol_jsx_prefix = this[Symbol.toStringTag];
+                $.$mol_jsx_booked = new Set;
+                $.$mol_jsx_document = this.ownerDocument;
+                return this.render();
+            }
+            finally {
+                $.$mol_jsx_prefix = prefix;
+                $.$mol_jsx_booked = booked;
+                $.$mol_jsx_document = document;
+            }
+        }
+        render() {
+            return $.$mol_fail(new Error('dom_tree() not implemented'));
+        }
+    }
+    $.$mol_jsx_view = $mol_jsx_view;
+})($ || ($ = {}));
+//view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_test({
+        'equal paths'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2, 3, 4],
+                suffix: [[], [], []],
+            });
+        },
+        'different suffix'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 5, 4]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2],
+                suffix: [[3, 4], [3, 5], [5, 4]],
+            });
+        },
+        'one contains other'() {
+            const diff = $.$mol_diff_path([1, 2, 3, 4], [1, 2], [1, 2, 3]);
+            $.$mol_assert_like(diff, {
+                prefix: [1, 2],
+                suffix: [[3, 4], [], [3]],
+            });
+        },
+        'fully different'() {
+            const diff = $.$mol_diff_path([1, 2], [3, 4], [5, 6]);
+            $.$mol_assert_like(diff, {
+                prefix: [],
+                suffix: [[1, 2], [3, 4], [5, 6]],
+            });
+        },
+    });
+})($ || ($ = {}));
+//path.test.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_diff_path(...paths) {
+        const limit = Math.min(...paths.map(path => path.length));
+        lookup: for (var i = 0; i < limit; ++i) {
+            const first = paths[0][i];
+            for (let j = 1; j < paths.length; ++j) {
+                if (paths[j][i] !== first)
+                    break lookup;
+            }
+        }
+        return {
+            prefix: paths[0].slice(0, i),
+            suffix: paths.map(path => path.slice(i)),
+        };
+    }
+    $.$mol_diff_path = $mol_diff_path;
+})($ || ($ = {}));
+//path.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_error_mix extends Error {
+        constructor(message, ...errors) {
+            super(message);
+            this.errors = errors;
+            if (errors.length) {
+                const stacks = [...errors.map(error => error.message), this.stack];
+                const diff = $.$mol_diff_path(...stacks.map(stack => {
+                    if (!stack)
+                        return [];
+                    return stack.split('\n').reverse();
+                }));
+                const head = diff.prefix.reverse().join('\n');
+                const tails = diff.suffix.map(path => path.reverse().map(line => line.replace(/^(?!\s+at)/, '\tat (.) ')).join('\n')).join('\n\tat (.) -----\n');
+                this.stack = `Error: ${this.constructor.name}\n\tat (.) /"""\\\n${tails}\n\tat (.) \\___/\n${head}`;
+                this.message += errors.map(error => '\n' + error.message).join('');
+            }
+        }
+        toJSON() {
+            return this.message;
+        }
+    }
+    $.$mol_error_mix = $mol_error_mix;
+})($ || ($ = {}));
+//mix.js.map
 
 //# sourceMappingURL=web.test.js.map
