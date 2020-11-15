@@ -3,7 +3,7 @@
 }
 
 [hyoo_offer_placeholder] {
-	flex: 1 0 auto;
+	flex: 1 0 400px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
