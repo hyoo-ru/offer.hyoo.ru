@@ -24,6 +24,7 @@
   width: 14vmin;
   box-shadow: none;
   border: none;
+  margin: 1rem;
 }
 [hyoo_offer_about_technology] {
   display: flex;
