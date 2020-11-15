@@ -23,6 +23,7 @@ $mol_image $mol_view
 		alt <= title
 
 $hyoo_offer_about $mol_view
+	minimal_width 300
 	sub /
 		<= Logo $hyoo_offer_about_placeholder
 			image \hyoo/offer/about/guild.svg

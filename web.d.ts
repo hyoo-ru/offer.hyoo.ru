@@ -1101,6 +1101,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_offer_about extends $mol_view {
+        minimal_width(): number;
         sub(): readonly any[];
         guild(): string;
         Logo(): $hyoo_offer_about_placeholder;

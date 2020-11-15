@@ -3662,6 +3662,9 @@ var $;
 var $;
 (function ($) {
     class $hyoo_offer_about extends $.$mol_view {
+        minimal_width() {
+            return 300;
+        }
         sub() {
             return [
                 this.Logo(),
