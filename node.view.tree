@@ -5,6 +5,7 @@ $mol_scroll $mol_view
 		^
 		scrollTop <= scroll_top?val 0
 		scrollLeft <= scroll_left?val 0
+		tabIndex <= tabindex -1
 	event *
 		^
 		scroll?event <=> event_scroll?event null
@@ -13,6 +14,62 @@ $mol_book2 $mol_scroll
 	sub <= pages /$mol_view
 	minimal_width 0
 	Placeholder $mol_view
+
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+
+$hyoo_offer_about $mol_view
+	sub /
+		<= Logo $hyoo_offer_about_placeholder
+			image \hyoo/offer/about/guild.svg
+			title <= guild @ \TechGuild HyOO
+		<= Advantages $mol_view
+			sub /
+				<= Technology $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/technology.svg
+					title <= technology @ \Flexible adaptive interface
+				<= Code $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/code_rate.svg
+					title <= code_rate @ \Quick and easy development
+				<= Programming $hyoo_offer_about_placeholder
+					image \hyoo/offer/about/programming.svg
+					title <= programming @ \High-speed applications
+$hyoo_offer_about_placeholder $mol_view
+	sub /
+		<= Image $mol_image
+			uri <= image \
+		<= title \
+
+$mol_link $mol_view
+	dom_name \a
+	attr *
+		^
+		href <= uri \
+		title <= hint \
+		target <= target \_self
+		download <= file_name \
+		mol_link_current <= current false
+		mol_theme <= theme null
+	sub /$mol_view_content
+		<= title
+	arg *
+	event *
+		^
+		click?event <=> click?event <=> event_click?event null
+
+$mol_speck $mol_view
+	attr *
+		^
+		mol_theme \$mol_theme_accent
+	style *
+		^
+		minHeight \1em
+	sub /
+		<= value null
 
 $mol_button $mol_view
 	enabled true
@@ -28,9 +85,10 @@ $mol_button $mol_view
 		disabled <= disabled false
 		role \button
 		tabindex <= tab_index 0
-		title <= hint \
+		title <= hint_or_error <= hint \
 	sub /$mol_view_content
 		<= title
+	Speck $mol_speck
 
 $mol_page $mol_view
 	sub /
@@ -59,23 +117,10 @@ $mol_list $mol_view
 		0
 		0
 
-$mol_link $mol_view
-	dom_name \a
-	attr *
-		^
-		href <= uri \
-		title <= hint \
-		target <= target \_self
-		download <= file_name \
-		mol_link_current <= current false
-	sub /$mol_view_content
-		<= title
-	arg *
-	event *
-		^
-		click?event <=> click?event <=> event_click?event null
-
 $mol_float $mol_view
+	style *
+		^
+		minHeight \auto
 
 $mol_button_typed $mol_button
 
@@ -97,7 +142,6 @@ $mol_check $mol_button_minor
 $mol_svg $mol_view
 	dom_name \svg
 	dom_name_space \http://www.w3.org/2000/svg
-	text_width?text 0
 	font_size 16
 	font_family \
 
@@ -135,16 +179,23 @@ $mol_check_expand $mol_check
 	checked?val <=> expanded?val false
 	enabled <= expandable false
 
-$mol_dimmer $mol_view
+$mol_paragraph $mol_view
+	line_height 24
+	letter_width 8
+
+$mol_dimmer $mol_paragraph
 	haystack \
 	needle \
 	sub <= parts /$mol_view_content
-	Low!id $mol_view
+	Low!id $mol_paragraph
+		sub /
+			<= string!id \
+	High!id $mol_paragraph
 		sub /
 			<= string!id \
 
 $mol_grid $mol_scroll
-	row_height 40
+	row_height 32
 	row_ids /string[]
 	row_id!index null
 	col_ids /
@@ -193,17 +244,6 @@ $mol_grid_cell $mol_view
 	minimal_height 40
 
 $mol_grid_number $mol_grid_cell
-
-$mol_paragraph $mol_view
-	line_height 24
-	letter_width 8
-
-$mol_image $mol_view
-	dom_name \img
-	field *
-		^
-		src <= uri \
-		alt <= title
 
 $mol_link_iconed $mol_link
 	sub /
@@ -263,7 +303,7 @@ $mol_text_link $mol_link_iconed
 		^
 		mol_text_type <= type?val \
 	uri <= link?val \
-	content <= content?val /
+	content?val /
 
 $mol_text_image $mol_view
 	dom_name \object
@@ -332,28 +372,6 @@ $hyoo_offer_dev $mol_page
 				\# [Стать партнёром](mailto:offer-dev@hyoo.ru)
 				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
 
-$hyoo_offer_about $mol_view
-	sub /
-		<= Logo $hyoo_offer_about_placeholder
-			image \hyoo/offer/about/guild.svg
-			title <= guild @ \TechGuild HyOO
-		<= Advantages $mol_view
-			sub /
-				<= Technology $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/technology.svg
-					title <= technology @ \Flexible adaptive interface
-				<= Code $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/code_rate.svg
-					title <= code_rate @ \Quick and easy development
-				<= Programming $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/programming.svg
-					title <= programming @ \High-speed applications
-$hyoo_offer_about_placeholder $mol_view
-	sub /
-		<= Image $mol_image
-			uri <= image \
-		<= title \
-
 $mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
 
 $hyoo_offer $mol_book2
@@ -380,9 +398,6 @@ $hyoo_offer $mol_book2
 							! \
 							business \dev
 						title <= dev_title @ \Developers	
-		<= About_page $hyoo_offer_about
-			title <= about_title @ \About
-			minimal_width 600
 		<= Corporate_page $hyoo_offer_corporate
 			title <= corporate_title
 			minimal_width 600
@@ -395,7 +410,44 @@ $hyoo_offer $mol_book2
 			title <= dev_title
 			minimal_width 600
 			tools / <= Details_close
+	Placeholder $hyoo_offer_about
 	Details_close $mol_link
 		arg * business null
 		sub / <= Details_close_icon $mol_icon_cross
 			
+
+$mol_view_tree_test_attributes_super $mol_view
+	some *
+		a 0
+		b 2
+
+$mol_view_tree_test_attributes $mol_view_tree_test_attributes_super
+	some *
+		^
+		a 1
+
+$mol_view_tree_test_binding $mol_view
+	value?val <=> task_title_new?val \123
+	enabled <= head_complete_enabled false
+
+$mol_view_tree_test_binding_right $mol_view
+	Test $mol_view_tree_test_binding_right_test
+		width?v => outer_width?v
+
+$mol_view_tree_test_binding_right_test $mol_view
+	width?val 0
+
+$mol_view_tree_test_simple $mol_view
+	some 1
+	bool true
+	str \test
+	arr /
+	arr_string /string
+
+$mol_view_tree_test_attributes_subcomponent $mol_view
+	- Comment
+	Page!index $mol_view_tree_test_attributes_subcomponent_page
+		Sub <= page!index null
+
+$mol_view_tree_test_attributes_subcomponent_page $mol_view
+	Sub null
