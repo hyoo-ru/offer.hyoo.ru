@@ -27,7 +27,7 @@ $hyoo_offer_about $mol_view
 		<= Logo $hyoo_offer_about_placeholder
 			image \hyoo/offer/about/guild.svg
 			title <= guild @ \TechGuild HyOO
-		<= Advantages $mol_view
+		- <= Advantages $mol_view
 			sub /
 				<= Technology $hyoo_offer_about_placeholder
 					image \hyoo/offer/about/technology.svg
