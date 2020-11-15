@@ -2,8 +2,8 @@
 	flex: 0 0 20rem;
 }
 
-[hyoo_offer_about_page] {
-	flex: 0 0 60rem;
+[hyoo_offer_placeholder] {
+	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
