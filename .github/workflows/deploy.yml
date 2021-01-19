@@ -12,16 +12,14 @@ jobs:
     
     steps:
     
-    - name: Checkout sources
-      uses: actions/checkout@v1
-    
     - name: Build app
-      uses: hyoo-ru/mam_build@master
+      uses: hyoo-ru/mam_build@master2
       with:
-        module: 'hyoo/offer'
+        token: ${{ secrets.GH_PAT }}
+        package: 'hyoo/offer'
     
     - name: Deploy on GitHub Pages
       uses: alex-page/blazing-fast-gh-pages-deploy@v1.0.1
       with:
         repo-token: ${{ secrets.GH_PAT }}
-        site-directory: '.'
+        site-directory: 'hyoo/offer/-'
