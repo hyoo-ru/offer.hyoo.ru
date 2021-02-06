@@ -34,7 +34,7 @@ $hyoo_offer $mol_book2
 			title <= dev_title
 			minimal_width 600
 			tools / <= Details_close
-	Placeholder $hyoo_offer_about
+	Placeholder null
 	Details_close $mol_link
 		arg * business null
 		sub / <= Details_close_icon $mol_icon_cross
