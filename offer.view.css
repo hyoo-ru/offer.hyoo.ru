@@ -22,7 +22,7 @@
 }
 
 [hyoo_offer_menu] {
-	padding: .5rem;
+	padding: var(--mol_gap_block);
 }
 
 [hyoo_offer_menu] > * {
