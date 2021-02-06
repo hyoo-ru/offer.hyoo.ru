@@ -15,36 +15,6 @@ $mol_book2 $mol_scroll
 	minimal_width 0
 	Placeholder $mol_view
 
-$mol_image $mol_view
-	dom_name \img
-	field *
-		^
-		src <= uri \
-		alt <= title
-
-$hyoo_offer_about $mol_view
-	minimal_width 300
-	sub /
-		<= Logo $hyoo_offer_about_placeholder
-			image \hyoo/offer/about/guild.svg
-			title <= guild @ \TechGuild HyOO
-		- <= Advantages $mol_view
-			sub /
-				<= Technology $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/technology.svg
-					title <= technology @ \Flexible adaptive interface
-				<= Code $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/code_rate.svg
-					title <= code_rate @ \Quick and easy development
-				<= Programming $hyoo_offer_about_placeholder
-					image \hyoo/offer/about/programming.svg
-					title <= programming @ \High-speed applications
-$hyoo_offer_about_placeholder $mol_view
-	sub /
-		<= Image $mol_image
-			uri <= image \
-		<= title \
-
 $mol_link $mol_view
 	dom_name \a
 	attr *
@@ -247,6 +217,13 @@ $mol_grid_cell $mol_view
 
 $mol_grid_number $mol_grid_cell
 
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+
 $mol_link_iconed $mol_link
 	sub /
 		<= Icon $mol_image
@@ -412,7 +389,7 @@ $hyoo_offer $mol_book2
 			title <= dev_title
 			minimal_width 600
 			tools / <= Details_close
-	Placeholder $hyoo_offer_about
+	Placeholder null
 	Details_close $mol_link
 		arg * business null
 		sub / <= Details_close_icon $mol_icon_cross
