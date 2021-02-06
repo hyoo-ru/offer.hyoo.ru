@@ -808,6 +808,7 @@ declare namespace $ {
     type ContainRule = 'size' | 'layout' | 'style' | 'paint';
     interface Overrides {
         alignContent?: 'baseline' | 'start' | 'end' | 'flex-start' | 'flex-end' | 'center' | 'normal' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch' | readonly ['first' | 'last', 'baseline'] | readonly ['safe' | 'unsafe', 'start' | 'end' | 'flex-start' | 'flex-end'] | Common;
+        justifyContent?: 'start' | 'end' | 'flex-start' | 'flex-end' | 'left' | 'right' | 'space-between' | 'space-around' | 'space-evenly' | 'normal' | 'stretch' | 'center' | Common;
         background?: 'none' | {
             color?: Color | Common;
             image?: readonly (readonly [$mol_style_func<'url'>])[];
@@ -864,6 +865,8 @@ declare namespace $ {
         border?: {
             radius?: Length | [Length, Length];
             style?: 'none' | 'hidden' | 'dotted' | 'dashed' | 'solid' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset' | Common;
+            color?: Directions<Color> | Common;
+            width?: Directions<Length> | Common;
         };
         flex?: 'none' | 'auto' | {
             grow?: number | Common;
@@ -2097,8 +2100,8 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_view_tree_test_binding_right extends $mol_view {
-        Test(): $mol_view_tree_test_binding_right_test;
         outer_width(v?: any): any;
+        Test(): $mol_view_tree_test_binding_right_test;
     }
     class $mol_view_tree_test_binding_right_test extends $mol_view {
         width(val?: any): any;
