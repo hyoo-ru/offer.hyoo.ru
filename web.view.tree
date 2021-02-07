@@ -312,7 +312,7 @@ $hyoo_offer_corporate $mol_page
 				\- Приложения управления товаром (приём товара, списание, подтверждение контролёром, аналитика для руководства)
 				\
 				\# [Назначить деловую встречу](mailto:order-corporate@hyoo.ru)
-				\## [Примеры публичных приложений](https://showcase.hyoo.ru)
+				\## [Примеры публичных приложений](https://apps.hyoo.ru)
 
 $hyoo_offer_private $mol_page
 	body /
