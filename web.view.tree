@@ -365,19 +365,13 @@ $hyoo_offer $mol_book2
 			body /
 				<= Menu $mol_list rows /
 					<= Corporate_link $mol_link
-						arg *
-							! \
-							business \corporate
+						arg * business \corporate
 						title <= corporate_title @ \Corporative clients
 					<= Private_link $mol_link
-						arg *
-							! \
-							business \private
+						arg * business \private
 						title <= private_title @ \Private business
 					<= Dev_link $mol_link
-						arg *
-							! \
-							business \dev
+						arg * business \dev
 						title <= dev_title @ \Developers	
 		<= Corporate_page $hyoo_offer_corporate
 			title <= corporate_title

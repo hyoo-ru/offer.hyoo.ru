@@ -6472,7 +6472,6 @@ var $;
         Corporate_link() {
             const obj = new this.$.$mol_link();
             obj.arg = () => ({
-                "": "",
                 business: "corporate"
             });
             obj.title = () => this.corporate_title();
@@ -6484,7 +6483,6 @@ var $;
         Private_link() {
             const obj = new this.$.$mol_link();
             obj.arg = () => ({
-                "": "",
                 business: "private"
             });
             obj.title = () => this.private_title();
@@ -6496,7 +6494,6 @@ var $;
         Dev_link() {
             const obj = new this.$.$mol_link();
             obj.arg = () => ({
-                "": "",
                 business: "dev"
             });
             obj.title = () => this.dev_title();
