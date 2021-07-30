@@ -1,5 +1,2 @@
 include \/mol/offline/install
-deploy \/hyoo/offer/about/code_rate.svg
-deploy \/hyoo/offer/about/guild.svg
-deploy \/hyoo/offer/about/programming.svg
-deploy \/hyoo/offer/about/technology.svg
+deploy \/mol/mol_logo.svg

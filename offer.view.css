@@ -21,22 +21,9 @@
 	flex: 0 0 60rem;
 }
 
-[hyoo_offer_menu] {
-	padding: var(--mol_gap_block);
-}
-
-[hyoo_offer_menu] > * {
-	margin: 0;
-	display: block;	
-}
-
-[hyoo_offer] [mol_text_type="strong"] {
-	font-weight: normal;
-	color: yellow;
-}
-
 [hyoo_offer] [mol_text] {
 	box-shadow: none;
+	padding: 0;
 }
 
 [hyoo_offer_image] {
