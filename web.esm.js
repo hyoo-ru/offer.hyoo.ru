@@ -7018,7 +7018,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/offer/offer.view.css", "[hyoo_offer_main_page] {\n\tflex: 0 0 25rem;\n}\n\n[hyoo_offer_placeholder] {\n\tflex: 1 0 400px;\n\tdisplay: flex;\n\tflex-direction: column;\n\tjustify-content: space-evenly;\n}\n\n[hyoo_offer_dev_page] {\n\tflex: 0 0 60rem;\n}\n\n[hyoo_offer_private_page]{\n\tflex: 0 0 60rem;\n}\n\n[hyoo_offer_corporate_page]{\n\tflex: 0 0 60rem;\n}\n\n[hyoo_offer] [mol_text] {\n\tbox-shadow: none;\n\tpadding: 0;\n}\n\n[hyoo_offer_image] {\n\twidth: 25%;\n\tbox-shadow: none;\n\topacity: .25;\n}\n\n[hyoo_offer_text] {\n\tflex: 1 1 50%;\n}\n");
+    $.$mol_style_attach("hyoo/offer/offer.view.css", "[hyoo_offer_main_page] {\n\tflex: 0 0 25rem;\n}\n\n[hyoo_offer_menu] {\n\tpadding: var(--mol_gap_block);\n}\n\n[hyoo_offer_placeholder] {\n\tflex: 1 0 400px;\n\tdisplay: flex;\n\tflex-direction: column;\n\tjustify-content: space-evenly;\n}\n\n[hyoo_offer_dev_page] {\n\tflex: 0 0 60rem;\n}\n\n[hyoo_offer_private_page]{\n\tflex: 0 0 60rem;\n}\n\n[hyoo_offer_corporate_page]{\n\tflex: 0 0 60rem;\n}\n\n[hyoo_offer] [mol_text] {\n\tbox-shadow: none;\n\tpadding: var(--mol_gap_block);\n}\n\n[hyoo_offer_image] {\n\twidth: 25%;\n\tbox-shadow: none;\n\topacity: .25;\n}\n\n[hyoo_offer_text] {\n\tflex: 1 1 50%;\n}\n");
 })($ || ($ = {}));
 //offer.view.css.js.map
 ;
