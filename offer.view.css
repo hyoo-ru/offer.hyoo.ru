@@ -21,11 +21,6 @@
 	flex: 0 0 60rem;
 }
 
-[hyoo_offer] [mol_text] {
-	box-shadow: none;
-	padding: 0;
-}
-
 [hyoo_offer_image] {
 	width: 25%;
 	box-shadow: none;
