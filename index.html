@@ -15,5 +15,33 @@
   <script>
     window.onerror = function(a,b,c) { alert( a+' '+b+' '+c ) }
     window.onload = function(){ window.onerror = null }
+// P2P
+const run = async ()=> {
+
+	// peer 1
+	const con1 = new RTCPeerConnection
+	const chan1 = con1.createDataChannel( 'xxx', { negotiated : true, id: 1 } )
+	await con1.setLocalDescription()
+	await new Promise( done => con1.onicecandidate = ({ candidate })=> done( candidate ) )
+	const sdp1 = con1.localDescription.sdp
+	console.log( sdp1 )
+
+	// peer 2 receives offer around p2p
+	const con2 = new RTCPeerConnection
+	const chan2 = con2.createDataChannel( 'xxx', { negotiated : true, id: 1 } )
+	chan2.addEventListener( 'message', console.log )
+	await con2.setRemoteDescription( con1.localDescription )
+	await con2.setLocalDescription()
+	await new Promise( done => con2.onicecandidate = ({ candidate })=> done( candidate ) )
+	const sdp2 = con2.localDescription.sdp
+	console.log( sdp2 )
+
+	// peer 1 receives answer around p2p
+	await con1.setRemoteDescription( con2.localDescription )
+	await new Promise( done => chan1.onopen = done )
+	chan1.send( 'xxx' )
+
+}
+run()
   </script>
 <script src="web.js" charset="utf-8"></script>
