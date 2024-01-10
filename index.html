@@ -19,9 +19,13 @@
 const run = async ()=> {
 
 	// peer 1
+	console.log( 'o' )
 	const con1 = new RTCPeerConnection
+	console.log( 'x' )
 	const chan1 = con1.createDataChannel( 'xxx', { negotiated : true, id: 1 } )
+	console.log( 'xx' )
 	await con1.setLocalDescription()
+	console.log( 'xxx' )
 	await new Promise( done => con1.onicecandidate = ({ candidate })=> done( candidate ) )
 	const sdp1 = con1.localDescription.sdp
 	console.log( sdp1 )
