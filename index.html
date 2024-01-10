@@ -26,6 +26,7 @@ const run = async ()=> {
 	console.log( 'xx' )
 	await con1.setLocalDescription()
 	console.log( 'xxx' )
+	con1.onicecandidateerror = console.error
 	await new Promise( done => con1.onicecandidate = ({ candidate })=> done( candidate ) )
 	const sdp1 = con1.localDescription.sdp
 	console.log( sdp1 )
