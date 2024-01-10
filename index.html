@@ -27,7 +27,7 @@ const run = async ()=> {
 	await con1.setLocalDescription()
 	console.log( 'xxx' )
 	con1.onicecandidateerror = console.error
-	await new Promise( done => con1.onicecandidate = ({ candidate })=> done( candidate ) )
+	//await new Promise( done => con1.onicecandidate = ({ candidate })=> done( candidate ) )
 	const sdp1 = con1.localDescription.sdp
 	console.log( sdp1 )
 
@@ -37,7 +37,7 @@ const run = async ()=> {
 	chan2.addEventListener( 'message', console.log )
 	await con2.setRemoteDescription( con1.localDescription )
 	await con2.setLocalDescription()
-	await new Promise( done => con2.onicecandidate = ({ candidate })=> done( candidate ) )
+	//await new Promise( done => con2.onicecandidate = ({ candidate })=> done( candidate ) )
 	const sdp2 = con2.localDescription.sdp
 	console.log( sdp2 )
 
